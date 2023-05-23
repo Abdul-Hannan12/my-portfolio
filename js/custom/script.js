@@ -24,7 +24,13 @@ for(project of projects){
 <div class="box-col f-${project['type'].toLowerCase()}">
 <div class="box-item">
     <div class="image">
-        <a href="#popup-${project['id']}" class="has-popup-media">
+        ${
+            project['type'].toLowerCase() == 'design'
+            ?
+            `<a href="${project['img']}" class="has-popup-image">`
+            :
+            `<a href="#popup-${project['id']}" class="has-popup-media">`
+        }
             <img src="${project['img']}" alt="project image for ${project['title']}" />
             <span class="info">
                 <span class="centrize full-width">
@@ -37,9 +43,18 @@ for(project of projects){
     </div>
     <div class="desc">
         <div class="category">${project['type']}</div>
-        <a href="#popup-${project['id']}" class="name has-popup-media">${project['title']}</a>
+        ${
+            project['type'].toLowerCase() == 'design'
+            ?
+            `<a href="${project['img']}" class="name has-popup-image">${project['title']}</a>`
+            :
+            `<a href="#popup-${project['id']}" class="name has-popup-media">${project['title']}</a>`
+        }
     </div>
-    <div id="popup-${project['id']}" class="popup-box mfp-fade mfp-hide">
+    ${
+        project['type'].toLowerCase() != 'design'
+        ?
+        `<div id="popup-${project['id']}" class="popup-box mfp-fade mfp-hide">
         <div class="content">
             <div class="image">
                 <img src="${project['img']}" alt="project image for ${project['title']}">
@@ -49,14 +64,16 @@ for(project of projects){
                 <h4>${project['title']}</h4>
                 <p> ${project['desc']} </p>
                 ${
-                    project['type'].toLowerCase() == 'web'
+                    project['type'].toLowerCase() == 'web' || project['type'].toLowerCase() == 'other'
                     ?
                     '<a href="#" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>'
                     : ''
                 }
+                </div>
             </div>
-        </div>
-    </div>
+        </div>`
+    : ''
+    }
 </div>
 </div>
 `;
