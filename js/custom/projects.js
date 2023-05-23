@@ -117,4 +117,57 @@ let projects = [
         `,
         "img": "images/projects/app/tic_tac_toe.png"
     },
+    {
+        "id": 11,
+        "type": "Web",
+        "title": "Cipher",
+        "desc": `
+        Cipher is a versatile web-based application designed to provide secure encryption and decryption functionality for both text and images. With Cipher, users can safeguard their sensitive data and communicate securely.
+        <br><br>
+        This application offers two primary options: encryption and decryption. Users can input their desired text or upload an image file to apply the encryption algorithm, which transforms the data into a coded format, rendering it unreadable to unauthorized individuals. Conversely, the decryption option allows users to reverse the process and restore the original content from the encrypted data.
+        `,
+        "img": "images/projects/web/cipher.png"
+    },
+    {
+        "id": 12,
+        "type": "Web",
+        "title": "Password Generator",
+        "desc": `
+        The Simple Password Generator is a user-friendly web-based application designed to create passwords quickly and easily. With this tool, users can generate passwords of varying strengths to enhance their online security.
+        <br><br>
+        This straightforward app provides four distinct options for password generation: "Super Strong," "Strong," "Weak," and "Funny." Users can select their preferred strength level based on their specific requirements and preferences.
+        `,
+        "img": "images/projects/web/pw_gen.png"
+    },
+    {
+        "id": 13,
+        "type": "Web",
+        "title": "PDF Merger",
+        "desc": `
+        The PDF Merger is a convenient web-based application that simplifies the process of merging multiple PDF files into a single, cohesive document. With this user-friendly tool, combining and organizing PDFs becomes effortless and efficient.
+        <br><br>
+        Using the PDF Merger is straightforward. Users can upload two or more PDF files from their local storage directly through the web app's intuitive interface. The application then processes the uploaded files and merges them seamlessly into a unified PDF document.
+        `,
+        "img": "images/projects/web/pdf_merger.png"
+    },
+    {
+        "id": 14,
+        "type": "Web",
+        "title": "Chat App",
+        "desc": `
+        The Chat App is an interactive web-based group chatting application that facilitates seamless communication among users in real-time. Powered by Socket.IO, this application enables users to engage in instant messaging and establish connections with individuals or groups.
+        `,
+        "img": "images/projects/web/chat_app.png"
+    },
+    {
+        "id": 15,
+        "type": "Web",
+        "title": "Color",
+        "desc": `
+        This is a versatile web application designed to assist users in exploring, generating, and converting colors. With this intuitive tool, users can effortlessly generate random colors, obtain color codes or RGB values, and convert between hexadecimal (hex) and RGB color representations.
+        <br><br>
+        This web app offers multiple functionalities, empowering users to unleash their creativity and effectively work with colors
+        `,
+        "img": "images/projects/web/color.png"
+    },
 ]

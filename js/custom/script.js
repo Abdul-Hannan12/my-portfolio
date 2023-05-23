@@ -1,5 +1,22 @@
 let projectDiv = document.getElementById("projectsContainer");
 
+let getProjectIconClass = (type) =>{
+    switch(type){
+        case 'app':
+            return 'icon fas fa-mobile-alt';
+            break;
+        case 'web':
+            return 'icon fab fa-chrome';
+            break;
+        case 'design':
+            return 'icon fas fa-image';
+            break;
+        case 'other':
+            return 'icon fas fa-link';
+            break;
+    }
+};
+
 for(project of projects){
 
     let elem = 
@@ -12,7 +29,7 @@ for(project of projects){
             <span class="info">
                 <span class="centrize full-width">
                     <span class="vertical-center">
-                        <i class="icon fas fa-mobile-alt"></i>
+                        <i class="${getProjectIconClass(project['type'].toLowerCase())}"></i>
                     </span>
                 </span>
             </span>
@@ -31,6 +48,12 @@ for(project of projects){
                 <div class="category">${project['type']}</div>
                 <h4>${project['title']}</h4>
                 <p> ${project['desc']} </p>
+                ${
+                    project['type'].toLowerCase() == 'web'
+                    ?
+                    '<a href="#" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>'
+                    : ''
+                }
             </div>
         </div>
     </div>
