@@ -96,13 +96,14 @@ class auth extends database
         $img = $this->upload_img($project_img);
         if($img){
 
-            $sql = "INSERT into projects (name, type, description, url, created_on) VALUES (:name, :type, :desc, :url, :created_on)";
+            $sql = "INSERT into projects (name, type, description, url, img, created_on) VALUES (:name, :type, :desc, :url, :img, :created_on)";
             $stmt = $this->conn->prepare($sql);
             $date = $this->date_now();
             $stmt->bindParam(':name', $project_name);
             $stmt->bindParam(':type', $project_type);
             $stmt->bindParam(':desc', $project_desc);
             $stmt->bindParam(':url', $project_url);
+            $stmt->bindParam(':img', $img);
             $stmt->bindParam(':created_on', $date);
             if ($stmt->execute()){
                 return true;
@@ -113,6 +114,16 @@ class auth extends database
             return false;
         }
         
+    }
+
+    public function fetchAllProjects()
+    {
+        $sql = "SELECT * FROM projects WHERE del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     public function insert_recovery_Consignment($center, $product, $quantity, $amount, $uid, $bid)
@@ -150,7 +161,7 @@ class auth extends database
         } else {
             return false;
         }
-        
+
     }
 
     public function fetch_consignments()

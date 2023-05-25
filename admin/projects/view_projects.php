@@ -2,10 +2,7 @@
 
 include '../api/auth.php';
 $auth = new auth();
-$role = $_SESSION['role'];
-$bid = $_SESSION['bid'];
-$data = $auth->fetch_center();
-$branchBasedData = $auth->fetch_center_by_branch($bid);
+$projects = $auth->fetchAllProjects();
 $no=1;
 
 ?>
@@ -26,54 +23,28 @@ $no=1;
                             <tr>
                                 <th>#</th>
                                 <th class="d-none">#</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Contact No</th>
-                                <th>Whatsapp No</th>
-                                <th>Center Name</th>
-                                <th>Address</th>
-                                <?php if ($role != 2){ ?><th>Action</th><?php } ?>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
     
                         <tbody>
-                            <?php if ($role == 0) {?>
-                                <?php foreach($data as $center){ ?>
+                                <?php foreach($projects as $project){ ?>
                                     <tr >
-                                        <th scope="row"> <?php echo $no++ ?> </th>
-                                        <td class="d-none"><?php echo $center['cid'] ?></td>
-                                        <td><?php echo $center['username'] ?></td>
-                                        <td><?php echo $center['email'] ?></td>
-                                        <td><?php echo $center['contact'] ?></td>
-                                        <td><?php echo $center['whatsapp'] ?></td>
-                                        <td><?php echo $center['cname'] ?></td>
-                                        <td><?php echo $center['address'] ?></td>
-                                        <td>
+                                        <th style="vertical-align: middle;" scope="row"> <?php echo $no++ ?> </th>
+                                        <td class="d-none"><?php echo $project['pid'] ?></td>
+                                        <td style="vertical-align: middle;"><img style="width: 40px;" src="../../uploads/<?php echo $project['img'] ?>" alt="project thumbnail"></td>
+                                        <td style="vertical-align: middle;"><?php echo $project['name'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $project['type'] ?></td>
+                                        <td style="vertical-align: middle;">
                                             <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
+                                            &nbsp;&nbsp;&nbsp;
                                             <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                 <?php } ?>
-                            <?php }else{ ?>
-                                <?php foreach($branchBasedData as $center){ ?>
-                                    <tr>
-                                        <th scope="row"> <?php echo $no++ ?> </th>
-                                        <td class="d-none"><?php echo $center['cid'] ?></td>
-                                        <td><?php echo $center['username'] ?></td>
-                                        <td><?php echo $center['email'] ?></td>
-                                        <td><?php echo $center['contact'] ?></td>
-                                        <td><?php echo $center['whatsapp'] ?></td>
-                                        <td><?php echo $center['cname'] ?></td>
-                                        <td><?php echo $center['address'] ?></td>
-                                        <?php if ($role != 2){ ?>
-                                            <td>
-                                                <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
-                                                <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
-                                            </td>
-                                        <?php } ?>
-                                    </tr>
-                                <?php } ?>
-                            <?php } ?>
                         </tbody>
     
                     </table>
