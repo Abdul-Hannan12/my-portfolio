@@ -17,19 +17,19 @@
 	<link href="https://fonts.googleapis.com/css?family=Mr+Dafoe&amp;display=swap" rel="stylesheet">
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" href="images/favicons/logo.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="assets/images/favicons/logo.ico" type="image/x-icon">
 
 	<!-- Styles -->
-	<link rel="stylesheet" href="css/basic.css" />
-	<link rel="stylesheet" href="css/layout.css" />
-	<link rel="stylesheet" href="css/magnific-popup.css" />
-	<link rel="stylesheet" href="css/animate.css" />
-	<link rel="stylesheet" href="css/jarallax.css" />
-	<link rel="stylesheet" href="css/owl.carousel.css" />
-	<link rel="stylesheet" href="css/swiper.css" />
+	<link rel="stylesheet" href="assets/css/basic.css" />
+	<link rel="stylesheet" href="assets/css/layout.css" />
+	<link rel="stylesheet" href="assets/css/magnific-popup.css" />
+	<link rel="stylesheet" href="assets/css/animate.css" />
+	<link rel="stylesheet" href="assets/css/jarallax.css" />
+	<link rel="stylesheet" href="assets/css/owl.carousel.css" />
+	<link rel="stylesheet" href="assets/css/swiper.css" />
 	<link rel="stylesheet" href="css/fontawesome.css" />
 	<!-- Custom Styles -->
-	<link rel="stylesheet" href="css/custom/style.css">
+	<link rel="stylesheet" href="assets/css/custom/style.css">
 	
 </head>
 
@@ -58,7 +58,7 @@
 			<!-- logo -->
 			<div class="logo">
 				<a href="#">
-					<img class="logo-img" src="images/logo.png" alt="" />
+					<img class="logo-img" src="assets/images/logo.png" alt="" />
 					<span class="logo-lnk">Abdul <br />Hannan</span>
 				</a>
 			</div>
@@ -120,7 +120,7 @@
 			<!-- Background -->
 			<div class="background-bg">
 				<div class="background-filter">
-					<div class="background-img" style="background-image: url(images/man.jpg);"></div>
+					<div class="background-img" style="background-image: url(assets/images/man.jpg);"></div>
 				</div>
 			</div>
 
@@ -745,22 +745,22 @@
 	</div>
 
 	<!-- Custom Scripts -->
-	<script src="js/custom/projects.js"></script>
-	<script src="js/custom/script.js"></script>
+	<script src="assets/js/custom/projects.js"></script>
+	<script src="assets/js/custom/script.js"></script>
 	<!-- Scripts -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/velocity.min.js"></script>
-	<script src="js/jquery.validate.js"></script>
-	<script src="js/magnific-popup.js"></script>
-	<script src="js/typed.js"></script>
-	<script src="js/jarallax.js"></script>
-	<script src="js/jarallax-video.js"></script>
-	<script src="js/jarallax-element.js"></script>
-	<script src="js/imagesloaded.pkgd.js"></script>
-	<script src="js/isotope.pkgd.js"></script>
-	<script src="js/owl.carousel.js"></script>
-	<script src="js/swiper.js"></script>
-	<script src="js/scripts.min.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/velocity.min.js"></script>
+	<script src="assets/js/jquery.validate.js"></script>
+	<script src="assets/js/magnific-popup.js"></script>
+	<script src="assets/js/typed.js"></script>
+	<script src="assets/js/jarallax.js"></script>
+	<script src="assets/js/jarallax-video.js"></script>
+	<script src="assets/js/jarallax-element.js"></script>
+	<script src="assets/js/imagesloaded.pkgd.js"></script>
+	<script src="assets/js/isotope.pkgd.js"></script>
+	<script src="assets/js/owl.carousel.js"></script>
+	<script src="assets/js/swiper.js"></script>
+	<script src="assets/js/scripts.min.js"></script>
 
 </body>
 </html>

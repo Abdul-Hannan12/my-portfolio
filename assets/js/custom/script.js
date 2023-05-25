@@ -66,7 +66,7 @@ for(project of projects){
                 ${
                     project['type'].toLowerCase() == 'web' || project['type'].toLowerCase() == 'other'
                     ?
-                    '<a href="#" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>'
+                    `<a target="_blank" href="${project['url']}" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>`
                     : ''
                 }
                 </div>
