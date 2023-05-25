@@ -1,3 +1,17 @@
+<?php
+
+include './api/auth.php';
+$auth = new auth();
+
+$agent=$_SERVER['HTTP_USER_AGENT'];
+$ip= $auth->getUserIP();
+$host_name = gethostbyaddr($ip);
+$platform = $_SERVER['HTTP_SEC_CH_UA_PLATFORM'];
+$browser_info = $_SERVER['HTTP_SEC_CH_UA'];
+$is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
+
+?>
+
 <!doctype html>
 <html lang="en-US">
 <head>
