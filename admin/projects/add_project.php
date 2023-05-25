@@ -6,18 +6,17 @@
             <div class="bg-white rounded px-md-5 px-4 py-4">
                 <h4 class="title mb-4"> Add Project </h4>
 
-                <form action="" id="addProject">
+                <form method="POST" action="../api/process.php" id="addProject" enctype="multipart/form-data">
                     <div class="row">
 
-                    <div class="col-sm-12 mb-4">
-                        <!-- Uploaded image area-->
-                        <div class="image-area"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block w-25"></div>
-                        <!-- Image Upload Input -->
-                        <div class="col-sm-12 mt-4">
-                            <input type="file" id="upload" name="upload" class="form-control" onchange="readURL(this);" id="upload">
+                        <div class="col-sm-12 mb-4">
+                            <!-- Uploaded image area-->
+                            <img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block w-25">
+                            <!-- Image Upload Input -->
+                            <div class="col-sm-12 mt-4">
+                                <input type="file" id="img" name="img" class="form-control" onchange="readURL(this);">
+                            </div>
                         </div>
-
-                    </div>
                         <div class="col-sm-6 mb-4">
                             <label for="pname" class="form-label">Project name</label>
                             <input type="text" class="form-control" id="pname" name="pname">
@@ -38,10 +37,13 @@
                         </div>
                         <div class="col-sm-6 mb-4">
                             <label for="desc" class="form-label">Description</label>
-                            <textarea name="desp" rows="5" class="form-control h-auto" id="desc"></textarea>
+                            <textarea name="desc" rows="5" class="form-control h-auto" id="desc"></textarea>
                         </div>
 
+                        <input type="hidden" name="MODE" value="addProject">
+
                         <div class="text-end"> <input type="submit" class="btn btn-primary" id="addProject" name="addProject"> </div>
+                        
                     </div>
                 </form>
 
@@ -68,7 +70,7 @@
 }
 
 $(function () {
-    $('#upload').on('change', function () {
+    $('#img').on('change', function () {
         readURL(input);
     });
 });
@@ -91,9 +93,8 @@ $("#type").change(function(e){
 
 <script>
 
-     $("#addProject").submit(function(event) {
-        event.preventDefault();
-        if($("#upload").val() == ""){
+$('#addProject').ajaxForm(function(result) {
+        if($("#img").val() == ""){
             alert("Please Upload an Image");
             return;
         }else if($("#pname").val() == ""){
@@ -109,12 +110,7 @@ $("#type").change(function(e){
             alert("Please Enter description");
             return;
         }else{
-            $.ajax({
-            type: "POST",
-            url: "../api/process.php",
-            data:  "MODE=addProject&" + $("#addProject").serialize(),
-            success: function(data) {
-                var {Status} = JSON.parse(data) 
+            var {Status} = JSON.parse(result) 
                 if(Status == "Success"){
                     swal(
                     'Welldone',
@@ -129,11 +125,10 @@ $("#type").change(function(e){
                     'Opss',
                     'Project couldn\'t be Added',
                     'error'
-                    )
-                }
+                )
             }
-        });
         }
+        
     });
-
+    
 </script>

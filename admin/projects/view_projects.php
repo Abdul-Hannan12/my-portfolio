@@ -1,157 +1,141 @@
 <?php include '../includes/header.php';
+
 include '../api/auth.php';
-$data_fetched = new auth();
+$auth = new auth();
 $role = $_SESSION['role'];
 $bid = $_SESSION['bid'];
-date_default_timezone_set("Asia/Karachi");
-$Short = date('Y'); 
-$Expiry = date('Y', strtotime('+3 years'));
-$data  = ($role == 0) ?  $data_fetched->fetch_stocks() : $data_fetched->fetch_stocks_by_branch($bid);
-
-
+$data = $auth->fetch_center();
+$branchBasedData = $auth->fetch_center_by_branch($bid);
 $no=1;
-?>
 
+?>
 
 <div class="container-fluid mt-4">
     <div class="row">
 
-        <div class="col-12 px-sm-4 px-1">
+        <div class="col-12 px-4">
             <!-- Stock Details -->
-            <div class="bg-white rounded p-sm-4 px-2">
-                <h4 class="title mb-4"> Stock Managment Details </h4>
+            <div class="bg-white rounded p-4">
+                <h4 class="title mb-4"> All Projects </h4>
 
                 <div class="table-responsive">
-                    <style>
-                        .short td{
-                            color: white !important;
-                        }
-                    </style>
+
                     <table id="zero-config" class="table dt-table-hover " style="width: 100%;">
     
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th class="d-none">#</th>
-                                <th> Name</th>
-                                <th> Company</th>
-                                <th>Manufacturing date</th>
-                                <th>Expiry date</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Branch</th>
-                                <th>lot number</th>
-                                <th style="width: 160px"> Description</th>
-
-                                <?php if ($role != 2){ ?><th style="width: 100px">Action</th><?php } ?>
-
-
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Contact No</th>
+                                <th>Whatsapp No</th>
+                                <th>Center Name</th>
+                                <th>Address</th>
+                                <?php if ($role != 2){ ?><th>Action</th><?php } ?>
                             </tr>
                         </thead>
     
                         <tbody>
-                        
-
-                        <?php foreach($data as $stock) {?>
-                                    
-                            <tr <?php
-                                $datetime = new DateTime($stock['edate']);
-                                $e = $datetime->format('Y');
-                                if( $e <= $Short ){
-                                    echo "class='bg-danger short'";
-                                }elseif($e <= $Expiry ){
-                                    echo "class='bg-warning expiry '";
-                                }
-                                
-                                ?>>
-                                <td scope="row"> <?php echo $no++; ?> </td>
-                                <td class="d-none"> <?php echo $stock['pid'] ?> </td>  
-                                <td> <?php echo $stock['pname'] ?> </td>
-                                <td> <?php echo $stock['mcompany'] ?> </td>
-                                <td> <?php echo $stock['mdate'] ?> </td>
-                                <td> <?php echo $stock['edate'] ?> </td>
-                                <td> <?php echo $stock['price'] ?> </td>
-                                <td> <?php echo $stock['quantity'] ?> </td>
-                                <td> <?php echo $stock['branch_name'] ?> </td>
-                                <td> <?php echo $stock['lotnumber'] ?> </td>
-                                <td> <?php echo $stock['desp'] ?> </td>
-                                <?php if ($role != 2){ ?>
-                                    <td>
-                                        <button class="btn btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
-                                        <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
+                            <?php if ($role == 0) {?>
+                                <?php foreach($data as $center){ ?>
+                                    <tr >
+                                        <th scope="row"> <?php echo $no++ ?> </th>
+                                        <td class="d-none"><?php echo $center['cid'] ?></td>
+                                        <td><?php echo $center['username'] ?></td>
+                                        <td><?php echo $center['email'] ?></td>
+                                        <td><?php echo $center['contact'] ?></td>
+                                        <td><?php echo $center['whatsapp'] ?></td>
+                                        <td><?php echo $center['cname'] ?></td>
+                                        <td><?php echo $center['address'] ?></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
+                                            <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
+                                        </td>
+                                    </tr>
                                 <?php } ?>
-                            </tr>
-                        <?php } ?>
+                            <?php }else{ ?>
+                                <?php foreach($branchBasedData as $center){ ?>
+                                    <tr>
+                                        <th scope="row"> <?php echo $no++ ?> </th>
+                                        <td class="d-none"><?php echo $center['cid'] ?></td>
+                                        <td><?php echo $center['username'] ?></td>
+                                        <td><?php echo $center['email'] ?></td>
+                                        <td><?php echo $center['contact'] ?></td>
+                                        <td><?php echo $center['whatsapp'] ?></td>
+                                        <td><?php echo $center['cname'] ?></td>
+                                        <td><?php echo $center['address'] ?></td>
+                                        <?php if ($role != 2){ ?>
+                                            <td>
+                                                <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
+                                                <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        <?php } ?>
+                                    </tr>
+                                <?php } ?>
+                            <?php } ?>
                         </tbody>
-
     
                     </table>
-
                 </div>
             </div>
         </div>
 
     </div>
 </div>
+
+
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="enrollLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Stock</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Entertainment</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
         
-        <form id="edit_stock" >
-        <div class="row">
-                        <div class="col-sm-6 mb-4">
-                            <input type="hidden" name="id" id="id" >
-                            <label for="name" class="form-label">Product name</label>
-                            <input type="text" class="form-control" id="pname" name="pname">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Manufacturing Company</label>
-                            <input type="text" class="form-control" id="mcompany" name="mcompany">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Manufacturing Date</label>
-                            <input type="date" class="form-control" id="mdate" name="mdate">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Expiry Date</label>
-                            <input type="date" class="form-control" id="edate" name="edate">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="price" name="price">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Quantity</label>
-                            <input type="text" class="form-control" id="qty" name="quantity">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Lot Number</label>
-                            <input type="text" class="form-control" id="lot" name="lotnumber">
-                        </div>
-                        <div class="col-sm-6 mb-4">
-                            <label for="name" class="form-label">Description</label>
-                            <textarea name="desp" rows="5" class="form-control h-auto" id="desc"></textarea>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-warning" value="Update">
-                    </div>
-                </form>
+        <form id="editCenter">
+            <div class="row">
+                <div class="col-sm-6 mb-4">
+                    <input type="hidden" name="id" id="id">
+                    <label for="name" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div class="col-sm-6 mb-4">
+                    <label for="name" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" >
+                </div>
+                <div class="col-sm-6 mb-4">
+                    <label for="name" class="form-label">Contact No#</label>
+                    <input type="text" class="form-control" id="contact" name="contact">
+                </div>
+                <div class="col-sm-6 mb-4">
+                    <label for="name" class="form-label">Whatsapp No#</label>
+                    <input type="text" class="form-control" id="whatsapp" name="whatsapp">
+                </div>
+                <div class="col-sm-6 mb-4">
+                    <label for="name" class="form-label">Center Name</label>
+                    <input type="text" class="form-control" id="cname" name="cname" >
+                </div>
+                <div class="col-sm-6 mb-4">
+                    <label for="name" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" >
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-warning" value="Update">
+            </div>
+
+        </form>
         </div>
     </div>
     </div>
 
 
-
 <?php include '../includes/footer.php' ?>
+
 <script>
 
     // GETTING FORM DATA TO DISPLAY ON EDIT FORM
@@ -166,31 +150,26 @@ $no=1;
                 return $(this).text();
             }).get();
 
-            $('#id').val(editData[1]);
-            $('#pname').val(editData[2]);
-            $('#mcompany').val(editData[3]);
-            $('#mdate').val(editData[4].trim(' '));
-            $('#edate').val(editData[5].trim(' '));
-            $('#price').val(editData[6]);
-            $('#qty').val(editData[7]);
-            $('#lot').val(editData[9]);
-            $('#desc').val(editData[10]);
+            $('#id').val(editData[0]);
+            $('#username').val(editData[1]);
+            $('#email').val(editData[2]);
+            $('#contact').val(editData[3]);
+            $('#whatsapp').val(editData[4]);
+            $('#cname').val(editData[5]);
+            $('#address').val(editData[6]);
 
-            console.log(editData);
-            exit();
-            
         });
     });
 
     // EDITING DATA
-    $("#edit_stock").submit(function(event) {
+    $("#editCenter").submit(function(event) {
         event.preventDefault();
             $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  "MODE=edit_stock&" + $("#edit_stock").serialize(),
+            data:  "MODE=editCenter&" + $("#editCenter").serialize(),
             success: function(data) {
-                // console.log(data);
+                console.log(data);
                 window.location.reload();
             }
         });
@@ -203,7 +182,7 @@ $no=1;
     // SHOWING ALERT FOR DELETING
     swal({
         title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this Stock!",
+        text: "Once deleted, you will not be able to recover this center!",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -216,30 +195,30 @@ $no=1;
                             return $(this).text();
                         }).get();
 
-                        let id = editData[1];
+                        let id = editData[0];
 
                         $.ajax({
                             type: "POST",
                             url: "../api/process.php",
-                            data:  "MODE=delete_stock&" + "delete="+id,
+                            data:  "MODE=delete_center&" + "delete="+id,
                             success: function(data) {
                                 console.log(data);
                                 window.location.reload();
                             }
                         });
-                    swal("Stock has been deleted!", {
+                    swal("Center has been deleted!", {
                     icon: "success",
                     });
 
                 } else {
 
-            swal("Stock not deleted!");
+                    swal("Center not deleted!");
 
                 }
             });
         });
     });
 
-
+    
 
 </script>

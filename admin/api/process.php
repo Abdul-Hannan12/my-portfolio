@@ -4,8 +4,6 @@ ob_start();
 session_start();
 include ('auth.php');
 $api = new auth();
-// $password = "Admin123";
-// print_r($api->encPassword($password));
 
 if (isset($_POST['MODE']) && $_POST['MODE'] == "Signin") {
     $email = $api->filter_data($_POST['email']);
@@ -20,7 +18,6 @@ if (isset($_POST['MODE']) && $_POST['MODE'] == "Signin") {
         $_SESSION['username'] = $data['username'];
         echo '{"msg" : "Logged In SuccessFully", "Status" : "Success"}';
        exit();
-        // header("Location: ../dashboard.php");
     }else{
         echo '{"msg" : "Incorrect Email or Password", "Status" : "Error"}';
         exit();
@@ -32,20 +29,23 @@ if(isset($_SESSION['isLoggedIn'])){
     $uid = $_SESSION['uid'];
     $bid = $_SESSION['bid'];
 
-
-    if (isset($_POST['MODE']) && $_POST['MODE'] == "addEntertainment"){
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "addProject"){
         
-        $center = $api->filter_data($_POST['center']);
-        $person = $api->filter_data($_POST['person']);
-        $desc = $api->filter_data($_POST['description']);
-        $status = 0;
-        $date = $api->filter_data($_POST['date']);
+        $project_url = '';
         
+        $project_img = $_FILES['img'];
+        $project_name = $api->filter_data($_POST['pname']);
+        $project_type = $api->filter_data($_POST['type']);
+        $project_desc = $api->filter_data($_POST['desc']);
 
-        $result = $api->add_entertainment($center, $person, $desc, $status, $date, $bid);
+        if($project_type == 'web' || $project_type == 'other'){
+            $project_url = $api->filter_data($_POST['url']);
+        }
+        
+        $result = $api->addProject($project_name, $project_type, $project_desc, $project_url, $project_img);
 
         if ($result){
-            echo '{"msg" : "Entertainment added successfully", "Status" : "Success"}';
+            echo '{"msg" : "Project added successfully", "Status" : "Success"}';
         }else{
             echo '{"msg" : "Data insertion failed", "Status" : "Error"}';
         }
@@ -257,39 +257,6 @@ if (isset($_POST['MODE']) && ($_POST['MODE'] == "ManageUsers" || $_POST['MODE'] 
                 echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
             }
         }
-
-    }
-
-    // consignment-supply page data
-    if (isset($_POST['MODE']) && $_POST['MODE'] == "consignment_supply") { 
-        $center = $api->filter_data($_POST['center']);
-        $product = $api->filter_data($_POST['product']);
-        $quantity = $api->filter_data($_POST['quantity']);
-        $paid_amount = $api->filter_data($_POST['paid_amount']);
-        $product_price = $api->filter_data($_POST['product_price']);
-
-        $check = $api->check_consignment_in_db($center, $product);
-
-        if ($check > 0){
-            echo '{"msg" : "Consignment Already Exists!", "Status" : "Found"}';
-        } else {
-
-            $result = $api->insert_ConsignmentSupply($center, $product, $quantity, $paid_amount, $product_price, $uid, $bid);
-
-            if ($result) {
-                $data = $api->product_fetch($product);
-                $stock_qunatity = $data['quantity'] - $quantity;
-                $result = $api->product_update($product, $stock_qunatity);
-                if ($result) {
-                    echo '{"msg" : "Consignment Added SuccessFully!", "Status" : "Success"}';
-                }else{
-                    echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';   
-                }
-            } else {
-                echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
-            }
-
-            }
 
     }
 

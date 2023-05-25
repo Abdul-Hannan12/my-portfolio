@@ -22,6 +22,26 @@ class auth extends database
         $password_2 = md5($password . $salt);
         return $password_2;
     }
+    public function upload_img($file)
+    {
+        $allow = array('jpg', 'jpeg', 'png');
+        $exntension = explode('.', $file['name']);
+        $fileActExt = strtolower(end($exntension));
+        $fileNew = rand() . "." . $fileActExt;
+        $filePath = '../../uploads/' . $fileNew;
+
+        if (in_array($fileActExt, $allow)) {
+            if ($file['size'] > 0 && $file['error'] == 0) {
+                if (move_uploaded_file($file['tmp_name'], $filePath)) {
+                    return $fileNew;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
     public function signin($email, $password)
     {
         $sql = "SELECT * from users where email=:email && password=:password";
@@ -70,38 +90,26 @@ class auth extends database
         return $stmt->fetch();
     }
 
-    // fetch user by id profile setting
-    public function fetch_user_profile($uid)
+    // --------------------     PROJECT DATA      ------------------------- //
+    public function addProject($project_name, $project_type, $project_desc, $project_url, $project_img)
     {
-        $sql = "SELECT * from users where uid=:uid";
-        $stmt = $this
-            ->conn
-            ->prepare($sql);
-        $stmt->bindParam(':uid', $uid);
-        $stmt->execute();
-        return $stmt->fetch();
-    }
+        $img = $this->upload_img($project_img);
+        if($img){
 
-
-    // --------------------     CONSIGNMENT DATA      ------------------------- //
-    public function insert_ConsignmentSupply($center, $product, $quantity, $paid_amount, $product_amount, $uid, $bid)
-    {
-        $sql = "INSERT into consigment (cid, pid, quantity, paid, price, uid, bid, created_on) VALUES (:cid, :pid, :quantity, :paid, :price, :uid, :bid, :created_on)";
-        $stmt = $this
-            ->conn
-            ->prepare($sql);
-        $date = $this->date_now();
-        $stmt->bindParam(':cid', $center);
-        $stmt->bindParam(':pid', $product);
-        $stmt->bindParam(':quantity', $quantity);
-        $stmt->bindParam(':paid', $paid_amount);
-        $stmt->bindParam(':price', $product_amount);
-        $stmt->bindParam(':uid', $uid);
-        $stmt->bindParam(':bid', $bid);
-        $stmt->bindParam(':created_on', $date);
-        if ($stmt->execute()){
-            return true;
-        } else {
+            $sql = "INSERT into projects (name, type, description, url, created_on) VALUES (:name, :type, :desc, :url, :created_on)";
+            $stmt = $this->conn->prepare($sql);
+            $date = $this->date_now();
+            $stmt->bindParam(':name', $project_name);
+            $stmt->bindParam(':type', $project_type);
+            $stmt->bindParam(':desc', $project_desc);
+            $stmt->bindParam(':url', $project_url);
+            $stmt->bindParam(':created_on', $date);
+            if ($stmt->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
         
