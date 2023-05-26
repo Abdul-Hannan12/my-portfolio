@@ -61,7 +61,7 @@ if(isset($_SESSION['isLoggedIn'])){
         if ($result){
             echo json_encode($result);
         }else{
-            echo '{"msg" : "Data insertion failed", "Status" : "Error"}';
+            echo '{"msg" : "Data Could not be fetched", "Status" : "Error"}';
         }
 
     }
@@ -102,6 +102,70 @@ if(isset($_SESSION['isLoggedIn'])){
 
         if ($result){
             echo '{"msg" : "Project Deleted successfully", "Status" : "Success"}';
+        }else{
+            echo '{"msg" : "Data deletion failed", "Status" : "Error"}';
+        }
+
+    }
+
+    
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "addSkill"){
+        
+        $skill_name = $api->filter_data($_POST['name']);
+        $skill_percentage = $api->filter_data($_POST['percent']);
+        $skill_type = $api->filter_data($_POST['type']);
+        $skill_desc = $api->filter_data($_POST['desc']);
+
+        $result = $api->addSkill($skill_name, $skill_percentage, $skill_type, $skill_desc);
+
+        if ($result){
+            echo '{"msg" : "Project added successfully", "Status" : "Success"}';
+        }else{
+            echo '{"msg" : "Data insertion failed", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "getSkill"){
+        
+        $id = $_POST['id'];
+        
+        $result = $api->fetchSkill($id);
+
+        if ($result){
+            echo json_encode($result);
+        }else{
+            echo '{"msg" : "Data Could not be fetched", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateSkill"){
+        
+        $skill_id = $api->filter_data($_POST['id']);
+        $skill_name = $api->filter_data($_POST['name']);
+        $skill_percent = $api->filter_data($_POST['percent']);
+        $skill_type = $api->filter_data($_POST['type']);
+        $skill_desc = $api->filter_data($_POST['desc']);
+
+        $result = $api->updateSkill($skill_id, $skill_name, $skill_percent, $skill_type, $skill_desc);
+
+        if ($result){
+            echo '{"msg" : "Skill Updated successfully", "Status" : "Success"}';
+        }else{
+            echo '{"msg" : "Data updation failed", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "deleteSkill"){
+        
+        $skill_id = $api->filter_data($_POST['del']);
+
+        $result = $api->deleteSkill($skill_id);
+
+        if ($result){
+            echo '{"msg" : "Skill Deleted successfully", "Status" : "Success"}';
         }else{
             echo '{"msg" : "Data deletion failed", "Status" : "Error"}';
         }

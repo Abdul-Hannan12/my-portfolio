@@ -19,8 +19,8 @@
                             <label for="type" class="form-label">Type</label>
                             <select class="form-select" id="type" name="type">
                                 <option value="">Select</option>
-                                <option value="app">Coding Skill</option>
-                                <option value="web">Other Skill</option>
+                                <option value="coding">Coding Skill</option>
+                                <option value="other">Other Skill</option>
                             </select>
                         </div>
                         <div class="col-sm-8 mb-4">
@@ -39,35 +39,29 @@
 <script>
      $("#addSkill").submit(function(event) {
         event.preventDefault();
-        if($("#username").val() == ""){
-            alert("Please Enter Name");
+        if($("#name").val() == ""){
+            alert("Please Enter Skill Name");
             return
-        }else if($("#email").val() == ""){
-            alert("Please Enter Email");
+        }else if($("#percent").val() == ""){
+            alert("Please Enter Percentage");
             return
-        }else if($("#contact").val() == ""){
-            alert("Please Enter Contact");
+        }else if($("#type").val() == ""){
+            alert("Please Enter Skill Type");
             return
-        }else if($("#whatsapp").val() == ""){
-            alert("Please Enter Whatsapp");
-            return
-        }else if($("#cname").val() == ""){
-            alert("Please Enter Center Name");
-            return
-        }else if($("#address").val() == ""){
-            alert("Please Enter Address");
+        }else if($("#desc").val() == ""){
+            alert("Please Enter Description");
             return
         }else{
             $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  "MODE=addSkil&" + $("#addSkill").serialize(),
+            data:  "MODE=addSkill&" + $("#addSkill").serialize(),
             success: function(data) {
                 var {Status} = JSON.parse(data) 
                         if(Status == "Success"){
                             swal(
                                 'Welldone',
-                                'Center Added Successfully!',
+                                'Skill Added Successfully!',
                                 'success'
                             ).then(function() {
                                 window.location.reload();
@@ -75,7 +69,7 @@
                         }else{
                             swal(
                                 'Opss',
-                                'Couldn\'t Add Center!',
+                                'Couldn\'t Add Skill!',
                                 'error'
                             )
                         }

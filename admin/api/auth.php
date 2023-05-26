@@ -253,7 +253,84 @@ class auth extends database
     }
     /* ====================  PROJECT DATA END  ==================== */
     
+    
+    /* ====================  SKILL DATA END  ==================== */
+    public function addSkill($skill_name, $skill_percentage, $skill_type, $skill_desc)
+    {
+        $sql = "INSERT into skills (name, percent, description, type, created_on) VALUES (:name, :percent, :desc, :type, :created_on)";
+        $stmt = $this->conn->prepare($sql);
+        $date = $this->date_now();
+        $stmt->bindParam(':name', $skill_name);
+        $stmt->bindParam(':percent', $skill_percentage);
+        $stmt->bindParam(':desc', $skill_desc);
+        $stmt->bindParam(':type', $skill_type);
+        $stmt->bindParam(':created_on', $date);
+        if ($stmt->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function fetchAllSkills()
+    {
+        $sql = "SELECT * FROM skills WHERE del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function fetchSkill($id)
+    {
+        $sql = "SELECT * FROM skills WHERE sid = '$id' AND del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function updateSkill($skill_id, $skill_name, $skill_percent, $skill_type, $skill_desc)
+    {
+        $sql = "UPDATE skills SET name=:name, percent=:percent, description=:desc, type=:type WHERE sid=:id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':name', $skill_name);
+        $stmt->bindParam(':percent', $skill_percent);
+        $stmt->bindParam(':desc', $skill_desc);
+        $stmt->bindParam(':type', $skill_type);
+        $stmt->bindParam(':id', $skill_id);
+        if ($stmt->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function deleteSkill($id){
 
+        $sql = "UPDATE skills SET del = :del WHERE sid = :id";
+        $del = '1';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':del', $del);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            $trash_sql = "INSERT INTO trash (table_name, item_id, created_on) VALUES (:table, :id, :date)";
+            $date = $this->date_now();
+            $table = 'skills';
+            $trash_stmt = $this->conn->prepare($trash_sql);
+            $trash_stmt->bindParam(':table', $table);
+            $trash_stmt->bindParam(':id', $id);
+            $trash_stmt->bindParam(':date', $date);
+            if($trash_stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }
+    /* ====================  SKILL DATA END  ==================== */
+    
     public function insert_recovery_Consignment($center, $product, $quantity, $amount, $uid, $bid)
     {
         $sql = "INSERT into consigmentrecovery (cid, pid, quantitySold, amountRecived, uid, bid, created_on) VALUES (:cid, :pid, :quantity, :paid, :uid, :bid, :created_on)";
