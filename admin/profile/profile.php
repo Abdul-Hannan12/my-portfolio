@@ -43,9 +43,9 @@ if(isset($_SESSION['isLoggedIn'])){
 
                     <div class="col-md-4 col-sm-6 mb-4">
                         <label for="contact" class="form-label">
-                            Contact No#
+                            Contact No
                         </label>
-                        <input type="number" id="contact" name="contact" class="form-control" value="<?php echo $user['contact']  ?>">
+                        <input type="text" id="contact" name="contact" class="form-control" value="<?php echo $user['contact']  ?>">
                     </div>
 
                     <div class="col-md-4 col-sm-6 mb-4">

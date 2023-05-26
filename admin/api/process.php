@@ -13,7 +13,7 @@ if (isset($_POST['MODE']) && $_POST['MODE'] == "Signin") {
         $data = $api->fetch_user($email, $password);
         $_SESSION['isLoggedIn'] = true;
         $_SESSION['uid'] = $data['uid'];
-        $_SESSION['username'] = $data['username'];
+        $_SESSION['username'] = $data['name'];
         echo '{"msg" : "Logged In SuccessFully", "Status" : "Success"}';
        exit();
     }else{

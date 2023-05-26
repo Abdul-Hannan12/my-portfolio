@@ -71,15 +71,26 @@ $page =  basename($_SERVER['PHP_SELF']);
                 <a href="#"
                     class="nav-link dropdown-toggle <?php if($page == "profile.php" OR $page == "add-branch.php" OR $page == "manage-user.php"){ echo "active";}?>"
                     data-bs-toggle="dropdown">
-                    <i class="fa fa-cog me-2"></i> Settings
+                    <i class="fas fa-person-booth me-2"></i> Profile
                 </a>
                 <div
-                    class="dropdown-menu bg-transparent border-0 <?php if($page == "profile.php" OR $page == "add-branch.php" OR $page == "manage-user.php"){ echo "show";}?>">
-                    <a href="<?php echo $uri ?>setting/profile.php"
+                    class="dropdown-menu bg-transparent border-0 <?php if($page == "profile.php" OR $page == "about.php"){ echo "show";}?>">
+                    <a href="<?php echo $uri ?>profile/profile.php"
                         class="dropdown-item <?php if($page == "profile.php"){echo "text-primary";}?>"> Profile </a>
+                    <a href="<?php echo $uri ?>profile/about.php"
+                        class="dropdown-item <?php if($page == "about.php"){echo "text-primary";}?>"> About Me </a>
                 </div>
             </div>
-            <a href="<?php echo $uri ?>logout.php" class="nav-item nav-link">
+            <a href="<?php echo $uri ?>settings.php"
+                class="nav-item nav-link <?php if($page == "settings.php"){echo "active";}?>">
+                <i class="fa fa-cog me-2"></i> Settings
+            </a>
+            <a href="<?php echo $uri ?>trash.php"
+                class="nav-item nav-link <?php if($page == "trash.php"){echo "active";}?>">
+                <i class="fas fa-trash me-2"></i>
+                Trash
+            </a>
+            <a href="<?php echo $uri ?>profile/profile.php" class="nav-item nav-link">
                 <i class="fas fa-sign-out-alt"></i>
                 Logout
             </a>
