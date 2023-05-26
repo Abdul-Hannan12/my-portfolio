@@ -37,7 +37,7 @@ $page =  basename($_SERVER['PHP_SELF']);
                 <a href="#"
                     class="nav-link dropdown-toggle <?php if($page == "add_project.php" OR $page == "view_projects.php"){echo "active";}?>"
                     data-bs-toggle="dropdown">
-                    <i class="fas fa-layer-group"></i> Projects
+                    <i class="fas fa-book"></i> Projects
                 </a>
                 <div
                     class="dropdown-menu bg-transparent border-0  <?php if($page == "add_project.php" OR $page == "view_projects.php"){echo "show";}?>">
@@ -56,7 +56,7 @@ $page =  basename($_SERVER['PHP_SELF']);
                 <a href="#"
                     class="nav-link dropdown-toggle  <?php if($page == "add_skill.php" OR $page == "view_skills.php"){echo "active";}?>"
                     data-bs-toggle="dropdown">
-                    <i class="fa fa-hospital-alt me-2"></i> Skills
+                    <i class="fa fa-brain me-2"></i> Skills
                 </a>
                 <div
                     class="dropdown-menu bg-transparent border-0 <?php if($page == "add_skill.php" OR $page == "view_skills.php"){echo "show";}?>">
@@ -69,9 +69,9 @@ $page =  basename($_SERVER['PHP_SELF']);
 
             <div class="nav-item dropdown">
                 <a href="#"
-                    class="nav-link dropdown-toggle <?php if($page == "profile.php" OR $page == "add-branch.php" OR $page == "manage-user.php"){ echo "active";}?>"
+                    class="nav-link dropdown-toggle <?php if($page == "profile.php" OR $page == "about.php"){ echo "active";}?>"
                     data-bs-toggle="dropdown">
-                    <i class="fas fa-person-booth me-2"></i> Profile
+                    <i class="fas fa-user me-2"></i> Profile
                 </a>
                 <div
                     class="dropdown-menu bg-transparent border-0 <?php if($page == "profile.php" OR $page == "about.php"){ echo "show";}?>">

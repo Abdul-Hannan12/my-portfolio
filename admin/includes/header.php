@@ -18,6 +18,7 @@ session_start();
 
     <!-- Favicon -->
     <link rel="icon" href="assets/images/favicon.ico">
+    <link rel="icon" href="../assets/images/favicon.ico">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
