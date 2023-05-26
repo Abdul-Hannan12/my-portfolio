@@ -331,6 +331,30 @@ class auth extends database
     }
     /* ====================  SKILL DATA END  ==================== */
     
+
+    /* ====================  PROFILE DATA START  ==================== */
+    public function update_profile($name, $email, $contact, $age, $residence, $address, $freelance, $id){
+        $sql = 'UPDATE users SET name = :name, email = :email, contact =:contact, age=:age, residence=:res, freelance=:freelance, address=:addr WHERE uid = :id ';
+        $stmt = $this
+        ->conn
+        ->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':contact', $contact);
+        $stmt->bindParam(':age', $age);
+        $stmt->bindParam(':res', $residence);
+        $stmt->bindParam(':freelance', $freelance);
+        $stmt->bindParam(':addr', $address);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    /* ====================  PROFILE DATA END  ==================== */
+    
     public function insert_recovery_Consignment($center, $product, $quantity, $amount, $uid, $bid)
     {
         $sql = "INSERT into consigmentrecovery (cid, pid, quantitySold, amountRecived, uid, bid, created_on) VALUES (:cid, :pid, :quantity, :paid, :uid, :bid, :created_on)";
@@ -613,24 +637,6 @@ class auth extends database
     }
 
     // update profile by id
-    public function update_profile($uname, $email, $contact, $uid){
-        $sql = 'UPDATE users SET username = :uname, email = :email, contact =:contact where uid = :id ';
-        $stmt = $this
-                ->conn
-                ->prepare($sql);
-        $stmt->bindParam(':uname', $uname);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':contact', $contact);
-        $stmt->bindParam(':id', $uid);
-        if ($stmt->execute())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     public function delete_user($role, $id){
 

@@ -172,6 +172,26 @@ if(isset($_SESSION['isLoggedIn'])){
 
     }
 
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateProfile") {
+
+        $name = $api->filter_data($_POST['name']);
+        $email = $api->filter_data($_POST['email']);
+        $contact = $api->filter_data($_POST['contact']);
+        $age = $api->filter_data($_POST['age']);
+        $residence = $api->filter_data($_POST['residence']);
+        $address = $api->filter_data($_POST['address']);
+        $freelance = $api->filter_data($_POST['freelance']);
+        $id = $_SESSION['uid'];
+
+        $result = $api->update_profile($name, $email, $contact, $age, $residence, $address, $freelance, $id);
+        if ($result) {
+            $_SESSION['username'] = $username;
+            echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+
 
 
     if (isset($_POST['MODE']) && $_POST['MODE'] == "addScheduledEntertainment"){
@@ -343,21 +363,7 @@ if (isset($_POST['MODE']) && ($_POST['MODE'] == "ManageUsers" || $_POST['MODE'] 
 }
 
     // update profile
-    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateProfile") {
-
-        $username = $api->filter_data($_POST['username']);
-        $email = $api->filter_data($_POST['email']);
-        $contact = $api->filter_data($_POST['contact']);
-        $id = $_SESSION['uid'];
-
-        $result = $api->update_profile($username, $email, $contact, $id);
-        if ($result) {
-            $_SESSION['username'] = $username;
-            echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';
-        } else {
-            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
-        }
-    }
+    
 
     if (isset($_POST['MODE']) && $_POST['MODE'] == "addCenter") {
         $username = $api->filter_data($_POST['username']);
@@ -519,20 +525,7 @@ if (isset($_POST['MODE']) && ($_POST['MODE'] == "ManageUsers" || $_POST['MODE'] 
         }
     }
 
-    if (isset($_POST['MODE']) && $_POST['MODE'] == "edit_user"){
 
-        $id = $api->filter_data($_POST['id']);
-        $name = $api->filter_data($_POST['name']);
-        $email = $api->filter_data($_POST['email']);
-        $contact = $api->filter_data($_POST['contact']);
-
-        $result = $api->update_profile($name, $email, $contact, $id);
-        if ($result) {
-            echo '{"msg" : "User Updated SuccessFully!", "Status" : "Success"}';
-        } else {
-            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
-        }
-    }
 
     if (isset($_POST['MODE']) && $_POST['MODE'] == "complete_entertainment"){
 
