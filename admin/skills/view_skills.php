@@ -1,11 +1,8 @@
 <?php include '../includes/header.php';
 
 include '../api/auth.php';
-$data_fetched = new auth();
-$role = $_SESSION['role'];
-$bid = $_SESSION['bid'];
-$data = $data_fetched->fetch_center();
-$branchBasedData = $data_fetched->fetch_center_by_branch($bid);
+$auth = new auth();
+$projects = $auth->fetchAllProjects();
 $no=1;
 
 ?>
@@ -16,7 +13,7 @@ $no=1;
         <div class="col-12 px-4">
             <!-- Stock Details -->
             <div class="bg-white rounded p-4">
-                <h4 class="title mb-4"> Center Managment Details </h4>
+                <h4 class="title mb-4"> All Projects </h4>
 
                 <div class="table-responsive">
 
@@ -26,54 +23,28 @@ $no=1;
                             <tr>
                                 <th>#</th>
                                 <th class="d-none">#</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Contact No</th>
-                                <th>Whatsapp No</th>
-                                <th>Center Name</th>
-                                <th>Address</th>
-                                <?php if ($role != 2){ ?><th>Action</th><?php } ?>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
     
                         <tbody>
-                            <?php if ($role == 0) {?>
-                                <?php foreach($data as $center){ ?>
+                                <?php foreach($projects as $project){ ?>
                                     <tr >
-                                        <th scope="row"> <?php echo $no++ ?> </th>
-                                        <td class="d-none"><?php echo $center['cid'] ?></td>
-                                        <td><?php echo $center['username'] ?></td>
-                                        <td><?php echo $center['email'] ?></td>
-                                        <td><?php echo $center['contact'] ?></td>
-                                        <td><?php echo $center['whatsapp'] ?></td>
-                                        <td><?php echo $center['cname'] ?></td>
-                                        <td><?php echo $center['address'] ?></td>
-                                        <td>
+                                        <th style="vertical-align: middle;" scope="row"> <?php echo $no++ ?> </th>
+                                        <td class="d-none"><?php echo $project['pid'] ?></td>
+                                        <td style="vertical-align: middle;"><img style="width: 40px;" src="../../assets/images/projects/<?php echo $project['type'].'/'.$project['img']; ?>" alt="project thumbnail"></td>
+                                        <td style="vertical-align: middle;"><?php echo $project['name'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $project['type'] ?></td>
+                                        <td style="vertical-align: middle;">
                                             <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
+                                            &nbsp;&nbsp;&nbsp;
                                             <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                 <?php } ?>
-                            <?php }else{ ?>
-                                <?php foreach($branchBasedData as $center){ ?>
-                                    <tr>
-                                        <th scope="row"> <?php echo $no++ ?> </th>
-                                        <td class="d-none"><?php echo $center['cid'] ?></td>
-                                        <td><?php echo $center['username'] ?></td>
-                                        <td><?php echo $center['email'] ?></td>
-                                        <td><?php echo $center['contact'] ?></td>
-                                        <td><?php echo $center['whatsapp'] ?></td>
-                                        <td><?php echo $center['cname'] ?></td>
-                                        <td><?php echo $center['address'] ?></td>
-                                        <?php if ($role != 2){ ?>
-                                            <td>
-                                                <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
-                                                <button class="btn btn-sm btn-danger btn_delete"><i class="fas fa-trash-alt"></i></button>
-                                            </td>
-                                        <?php } ?>
-                                    </tr>
-                                <?php } ?>
-                            <?php } ?>
                         </tbody>
     
                     </table>
@@ -84,42 +55,46 @@ $no=1;
     </div>
 </div>
 
-
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="enrollLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Entertainment</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Project</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
         
-        <form id="editCenter">
+        <form id="editProject" method="POST" action="../api/process.php" enctype="multipart/form-data">
             <div class="row">
-                <div class="col-sm-6 mb-4">
+                <div class="col-sm-12 mb-4 d-flex">
+                    <img id="imageResult" style="max-width: 100%; height: 15rem;" class="mx-auto" alt="project thumbnail">
+                </div>
+                <div class="col-sm-12 mb-4 d-flex">
+                    <input type="file" id="img" name="img" class="form-control" onchange="readURL(this);">
+                </div>
+                <div class="col-sm-11 mb-4">
                     <input type="hidden" name="id" id="id">
-                    <label for="name" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title">
                 </div>
-                <div class="col-sm-6 mb-4">
-                    <label for="name" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" >
+                <div class="col-sm-12 mb-4">
+                    <label for="name" class="form-label">Type</label>
+                    <select class="form-select" id="type" name="type">
+                        <option value="">Select</option>
+                        <option value="app">App</option>
+                        <option value="web">Web</option>
+                        <option value="design">Design</option>
+                        <option value="other">Other</option>
+                    </select>
                 </div>
-                <div class="col-sm-6 mb-4">
-                    <label for="name" class="form-label">Contact No#</label>
-                    <input type="text" class="form-control" id="contact" name="contact">
+                <div class="col-sm-12 mb-4" id="urlDiv">
+                    <label for="name" class="form-label">Url</label>
+                    <input type="text" class="form-control" id="url" name="url">
                 </div>
-                <div class="col-sm-6 mb-4">
-                    <label for="name" class="form-label">Whatsapp No#</label>
-                    <input type="text" class="form-control" id="whatsapp" name="whatsapp">
-                </div>
-                <div class="col-sm-6 mb-4">
-                    <label for="name" class="form-label">Center Name</label>
-                    <input type="text" class="form-control" id="cname" name="cname" >
-                </div>
-                <div class="col-sm-6 mb-4">
-                    <label for="name" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" name="address" >
+                <input type="hidden" name="MODE" value="updateProject">
+                <div class="col-sm-12 mb-4">
+                    <label for="name" class="form-label">Description</label>
+                    <textarea name="desc" rows="5" class="form-control h-auto" id="desc"></textarea>
                 </div>
             </div>
 
@@ -133,92 +108,135 @@ $no=1;
     </div>
     </div>
 
-
 <?php include '../includes/footer.php' ?>
 
 <script>
+    
+    $('.table-responsive').on('click','.btn_edit',function () {
+        $("#edit").modal('show');
+        $tr = $(this).closest('tr');
+        $td = $tr.children("td")[0];
+        $id = $td.innerText;
 
-    // GETTING FORM DATA TO DISPLAY ON EDIT FORM
-    $(document).ready(()=>{
-        $('.btn_edit').on('click', function(){
+        $.ajax({
+        type: "POST",
+        url: "../api/process.php",
+        data:  `MODE=getProject&pid=${$id}`,
+        success: function(data) {
+            var projectData = JSON.parse(data) 
+            if(projectData['Status'] != "Error" && projectData['pid'] == $id){
 
-            $("#edit").modal('show');
+                if (projectData['type'] != 'web' && projectData['type'] != 'other'){
+                    $("#urlDiv").hide();
+                }else{
+                    $("#urlDiv").show();
+                }
 
-            $tr = $(this).closest('tr');
-
-            var editData = $tr.children("td").map(function(){
-                return $(this).text();
-            }).get();
-
-            $('#id').val(editData[0]);
-            $('#username').val(editData[1]);
-            $('#email').val(editData[2]);
-            $('#contact').val(editData[3]);
-            $('#whatsapp').val(editData[4]);
-            $('#cname').val(editData[5]);
-            $('#address').val(editData[6]);
-
-        });
-    });
-
-    // EDITING DATA
-    $("#editCenter").submit(function(event) {
-        event.preventDefault();
-            $.ajax({
-            type: "POST",
-            url: "../api/process.php",
-            data:  "MODE=editCenter&" + $("#editCenter").serialize(),
-            success: function(data) {
-                console.log(data);
-                window.location.reload();
+                $('#imageResult').attr('src', `../../assets/images/projects/${projectData['type']}/${projectData['img']}`);
+                $('#id').val(projectData['pid']);
+                $('#title').val(projectData['name']);
+                $('#type').val(projectData['type']);
+                $('#url').val(projectData['url']);
+                $('#desc').val(projectData['description']);
+                
+                $("#type").change(function(e){
+                    if(e.target.value == 'web' || e.target.value == 'other'){
+                        $("#urlDiv").show();
+                        $('#url').val(projectData['url']);
+                    }else{
+                        $("#urlDiv").val("");
+                        $("#urlDiv").hide();
+                    }
+                });
             }
-        });
+        }
     });
+});
 
-    // DELETING DATA
-    $(document).ready(()=>{
-        $('.btn_delete').on('click', function(){
+    $('.table-responsive').on('click','.btn_delete',function () {
+        $tr = $(this).closest('tr');
+        $td = $tr.children("td")[0];
+        $id = $td.innerText;
 
-    // SHOWING ALERT FOR DELETING
-    swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this center!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-        })
-            .then((willDelete) => {
+        swal({
+            title: "Are you sure?",
+            text: "Do you really want to delete this project",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
                 if (willDelete) {
                     $tr = $(this).closest('tr');
-
-                        var editData = $tr.children("td").map(function(){
-                            return $(this).text();
-                        }).get();
-
-                        let id = editData[0];
-
-                        $.ajax({
-                            type: "POST",
-                            url: "../api/process.php",
-                            data:  "MODE=delete_center&" + "delete="+id,
-                            success: function(data) {
-                                console.log(data);
-                                window.location.reload();
+                    $td = $tr.children("td")[0];
+                    let id = $td.innerText;
+                    $.ajax({
+                        type: "POST",
+                        url: "../api/process.php",
+                        data:  "MODE=deleteProject&" + "del="+id,
+                        success: function(data) {
+                            var { Status } = JSON.parse(data) 
+                            if (Status == 'Success'){
+                                swal("Project has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
+                            }else{
+                                swal(
+                                    'Opss',
+                                    'Something Went Wrong!',
+                                    'error'
+                                );
                             }
-                        });
-                    swal("Center has been deleted!", {
-                    icon: "success",
+                        }
                     });
-
                 } else {
-
-                    swal("Center not deleted!");
-
+                    swal("Project not deleted!");
                 }
             });
+});
+
+</script>
+
+<script>
+
+    function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#imageResult')
+                .attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+    $(function () {
+        $('#img').on('change', function () {
+            readURL(input);
         });
     });
 
-    
+</script>
+
+<script>
+
+    // EDITING DATA
+    $('#editProject').ajaxForm(function(result) {
+            var {Status} = JSON.parse(result) 
+                if(Status == "Success"){
+                    swal(
+                    'Welldone',
+                    'Project Updated Successfully!',
+                    'success'
+                    ).then(function() {
+                        window.location.reload();
+                    });
+                    
+                }else{
+                    swal(
+                    'Opss',
+                    'Project couldn\'t be Updated',
+                    'error'
+                )
+            }
+    });
 
 </script>

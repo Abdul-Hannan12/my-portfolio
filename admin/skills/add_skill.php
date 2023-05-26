@@ -1,53 +1,43 @@
 <?php include '../includes/header.php' ?>
 
-<!-- Sale & Revenue Start -->
 <div class="container-fluid mt-4">
     <div class="row">
         <div class="col-sm-12 px-sm-4 px-3">
             <div class="bg-white rounded py-4 px-5 ">
-                <h4 class="title mb-4">Add New Center</h4>
-
-                <form id="addCenter">
+                <h4 class="title mb-4">Add New Skill</h4>
+                <form id="addSkill">
                     <div class="row">
                         <div class="col-sm-4 mb-4">
-                            <label for="name" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username">
+                            <label for="name" class="form-label">Skill Name</label>
+                            <input type="text" class="form-control" id="name" name="name">
                         </div>
                         <div class="col-sm-4 mb-4">
-                            <label for="name" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" >
+                            <label for="percent" class="form-label">Percetage</label>
+                            <input type="number" class="form-control" id="percent" name="percent" >
                         </div>
                         <div class="col-sm-4 mb-4">
-                            <label for="name" class="form-label">Contact No#</label>
-                            <input type="text" class="form-control" id="contact" name="contact">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-select" id="type" name="type">
+                                <option value="">Select</option>
+                                <option value="app">Coding Skill</option>
+                                <option value="web">Other Skill</option>
+                            </select>
                         </div>
-                        <div class="col-sm-4 mb-4">
-                            <label for="name" class="form-label">Whatsapp No#</label>
-                            <input type="text" class="form-control" id="whatsapp" name="whatsapp">
+                        <div class="col-sm-8 mb-4">
+                            <label for="desc" class="form-label">Description</label>
+                            <textarea name="desc" rows="5" class="form-control h-auto" id="desc"></textarea>
                         </div>
-                        <div class="col-sm-4 mb-4">
-                            <label for="name" class="form-label">Center Name</label>
-                            <input type="text" class="form-control" id="cname" name="cname" >
-                        </div>
-                        <div class="col-sm-4 mb-4">
-                            <label for="name" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" >
-                        </div>
-
                         <div class="text-end"> <button class="btn btn-primary"> Submit </button> </div>
                     </div>
                 </form>
-
-
             </div>
         </div>
     </div>
 </div>
-<!-- Sale & Revenue End -->
 
 <?php include '../includes/footer.php' ?>
 <script>
-     $("#addCenter").submit(function(event) {
+     $("#addSkill").submit(function(event) {
         event.preventDefault();
         if($("#username").val() == ""){
             alert("Please Enter Name");
@@ -71,28 +61,24 @@
             $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  "MODE=addCenter&" + $("#addCenter").serialize(),
+            data:  "MODE=addSkil&" + $("#addSkill").serialize(),
             success: function(data) {
                 var {Status} = JSON.parse(data) 
                         if(Status == "Success"){
                             swal(
-                            'Welldone',
-                            'Center Added Successfully!',
-                            'success'
+                                'Welldone',
+                                'Center Added Successfully!',
+                                'success'
                             ).then(function() {
                                 window.location.reload();
                             });
-                           
-                        }else if (Status == "Found"){
-                            swal("Center Already Exists!", "please try to create a center with a different name", "warning")
                         }else{
                             swal(
-                            'Opss',
-                            'Couldn\'t Add Center!',
-                            'error'
+                                'Opss',
+                                'Couldn\'t Add Center!',
+                                'error'
                             )
                         }
-               
             }
         });
         }
