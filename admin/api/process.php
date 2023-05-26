@@ -12,9 +12,7 @@ if (isset($_POST['MODE']) && $_POST['MODE'] == "Signin") {
     if($row > 0){
         $data = $api->fetch_user($email, $password);
         $_SESSION['isLoggedIn'] = true;
-        $_SESSION['role'] = $data['role'];
         $_SESSION['uid'] = $data['uid'];
-        $_SESSION['bid'] = $data['bid'];
         $_SESSION['username'] = $data['username'];
         echo '{"msg" : "Logged In SuccessFully", "Status" : "Success"}';
        exit();
@@ -25,9 +23,7 @@ if (isset($_POST['MODE']) && $_POST['MODE'] == "Signin") {
 }
 
 if(isset($_SESSION['isLoggedIn'])){
-    $role = $_SESSION['role'];
     $uid = $_SESSION['uid'];
-    $bid = $_SESSION['bid'];
 
     if (isset($_POST['MODE']) && $_POST['MODE'] == "addProject"){
         

@@ -3,8 +3,6 @@
 include './includes/header.php';
 include './api/auth.php';
 $data_fetched = new auth();
-$role = $_SESSION['role'];
-$bid = $_SESSION['bid'];
 
 ?>
 

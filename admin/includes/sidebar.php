@@ -77,20 +77,6 @@ $page =  basename($_SERVER['PHP_SELF']);
                     class="dropdown-menu bg-transparent border-0 <?php if($page == "profile.php" OR $page == "add-branch.php" OR $page == "manage-user.php"){ echo "show";}?>">
                     <a href="<?php echo $uri ?>setting/profile.php"
                         class="dropdown-item <?php if($page == "profile.php"){echo "text-primary";}?>"> Profile </a>
-
-                    <?php if($_SESSION['role'] == 0) { ?>
-                    <a href="<?php echo $uri ?>setting/add-branch.php"
-                        class="dropdown-item <?php if ($page == "add-branch.php") {
-                            echo "text-primary";
-                        }?>"> Add Branch
-                    </a>
-                    <?php } ?>
-
-                    <?php if($_SESSION['role'] == 0 || $_SESSION['role'] == 1){ ?>
-                    <a href="<?php echo $uri ?>setting/manage-user.php"
-                        class="dropdown-item <?php if($page == "manage-user.php"){echo "text-primary";}?>"> Manage User
-                    </a>
-                    <?php } ?>
                 </div>
             </div>
             <a href="<?php echo $uri ?>logout.php" class="nav-item nav-link">
