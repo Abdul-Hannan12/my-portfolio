@@ -22,49 +22,6 @@ class auth extends database
         $password_2 = md5($password . $salt);
         return $password_2;
     }
-    public function upload_project_img($type, $file)
-    {
-        $allow = array('jpg', 'jpeg', 'png');
-        $exntension = explode('.', $file['name']);
-        $fileActExt = strtolower(end($exntension));
-        $fileNew = rand() . "." . $fileActExt;
-        $filePath = '../../assets/images/projects/'.$type.'/'. $fileNew;
-
-        if (in_array($fileActExt, $allow)) {
-            if ($file['size'] > 0 && $file['error'] == 0) {
-                if (move_uploaded_file($file['tmp_name'], $filePath)) {
-                    return $fileNew;
-                } else {
-                    return false;
-                }
-            }
-        } else {
-            return false;
-        }
-    }
-    public function delete_previous_image($id)
-    {
-        $previousImageFilename = $this->getProjectInfo($id, 'img');
-        $projectType = $this->getProjectInfo($id, 'type');
-        if (!empty($previousImageFilename)) {
-            $previousImagePath = '../../assets/images/projects/'.$projectType.'/'.$previousImageFilename;
-            if (file_exists($previousImagePath)) {
-                unlink($previousImagePath);
-            }
-        }
-    }
-    public function moveImageToChangedTypeFolder($id, $oldType, $newType)
-    {
-        $imgFileName = $this->getProjectInfo($id, 'img');
-        $sourcePath = '../../assets/images/projects/'.$oldType.'/'.$imgFileName;
-        $destinationPath = '../../assets/images/projects/'.$newType.'/'.$imgFileName;
-        $renamed = rename($sourcePath, $destinationPath);
-        if ($renamed) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     public function signin($email, $password)
     {
         $sql = "SELECT * from users where email=:email && password=:password";
@@ -113,7 +70,7 @@ class auth extends database
         return $stmt->fetch();
     }
 
-    // --------------------     PROJECT DATA      ------------------------- //
+    /* ====================  PROJECT DATA START  ==================== */
     public function addProject($project_name, $project_type, $project_desc, $project_url, $project_img)
     {
         $img = $this->upload_project_img($project_type, $project_img);
@@ -234,12 +191,67 @@ class auth extends database
         $stmt->bindParam(':del', $del);
         $stmt->bindParam(':id', $id);
         if ($stmt->execute()){
-            return true;
+            $trash_sql = "INSERT INTO trash (table_name, item_id, created_on) VALUES (:table, :id, :date)";
+            $date = $this->date_now();
+            $table = 'projects';
+            $trash_stmt = $this->conn->prepare($trash_sql);
+            $trash_stmt->bindParam(':table', $table);
+            $trash_stmt->bindParam(':id', $id);
+            $trash_stmt->bindParam(':date', $date);
+            if($trash_stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
 
     }
+    public function upload_project_img($type, $file)
+    {
+        $allow = array('jpg', 'jpeg', 'png');
+        $exntension = explode('.', $file['name']);
+        $fileActExt = strtolower(end($exntension));
+        $fileNew = rand() . "." . $fileActExt;
+        $filePath = '../../assets/images/projects/'.$type.'/'. $fileNew;
+
+        if (in_array($fileActExt, $allow)) {
+            if ($file['size'] > 0 && $file['error'] == 0) {
+                if (move_uploaded_file($file['tmp_name'], $filePath)) {
+                    return $fileNew;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+    public function delete_previous_image($id)
+    {
+        $previousImageFilename = $this->getProjectInfo($id, 'img');
+        $projectType = $this->getProjectInfo($id, 'type');
+        if (!empty($previousImageFilename)) {
+            $previousImagePath = '../../assets/images/projects/'.$projectType.'/'.$previousImageFilename;
+            if (file_exists($previousImagePath)) {
+                unlink($previousImagePath);
+            }
+        }
+    }
+    public function moveImageToChangedTypeFolder($id, $oldType, $newType)
+    {
+        $imgFileName = $this->getProjectInfo($id, 'img');
+        $sourcePath = '../../assets/images/projects/'.$oldType.'/'.$imgFileName;
+        $destinationPath = '../../assets/images/projects/'.$newType.'/'.$imgFileName;
+        $renamed = rename($sourcePath, $destinationPath);
+        if ($renamed) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /* ====================  PROJECT DATA END  ==================== */
     
 
     public function insert_recovery_Consignment($center, $product, $quantity, $amount, $uid, $bid)
@@ -964,6 +976,15 @@ class auth extends database
         return $stmt->fetchAll();
     }
 
+    public function fetch_user_profile($uid)
+    {
+        $sql = "SELECT * from users where uid=:uid";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':uid', $uid);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 }
-
 ?>

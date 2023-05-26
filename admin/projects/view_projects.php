@@ -176,8 +176,7 @@ $no=1;
                         success: function(data) {
                             var { Status } = JSON.parse(data) 
                             if (Status == 'Success'){
-                                window.location.reload();
-                                swal("Project has been deleted!", {icon: "success"});
+                                swal("Project has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
                             }else{
                                 swal(
                                     'Opss',
