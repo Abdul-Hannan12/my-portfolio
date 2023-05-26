@@ -52,6 +52,64 @@ if(isset($_SESSION['isLoggedIn'])){
 
     }
 
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "getProject"){
+        
+        $pid = $_POST['pid'];
+        
+        $result = $api->fetchProject($pid);
+
+        if ($result){
+            echo json_encode($result);
+        }else{
+            echo '{"msg" : "Data insertion failed", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateProject"){
+        
+        $project_url = '';
+        
+        $project_id = $api->filter_data($_POST['id']);
+
+        $project_name = $api->filter_data($_POST['title']);
+        $project_type = $api->filter_data($_POST['type']);
+        $project_desc = $api->filter_data($_POST['desc']);
+
+        if($project_type == 'web' || $project_type == 'other'){
+            $project_url = $api->filter_data($_POST['url']);
+        }
+
+        if(isset($_FILES['img'])){
+            $result = $api->updateProject($project_id, $project_name, $project_type, $project_desc, $project_url, $_FILES['img'], true);
+        }else{
+            $result = $api->updateProject($project_id, $project_name, $project_type, $project_desc, $project_url, '', false);
+        }
+
+        if ($result){
+            echo '{"msg" : "Project Updated successfully", "Status" : "Success"}';
+        }else{
+            echo '{"msg" : "Data updation failed", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "deleteProject"){
+        
+        $project_id = $api->filter_data($_POST['del']);
+
+        $result = $api->deleteProject($project_id);
+
+        if ($result){
+            echo '{"msg" : "Project Deleted successfully", "Status" : "Success"}';
+        }else{
+            echo '{"msg" : "Data deletion failed", "Status" : "Error"}';
+        }
+
+    }
+
+
+
     if (isset($_POST['MODE']) && $_POST['MODE'] == "addScheduledEntertainment"){
         
         $center = $api->filter_data($_POST['center']);

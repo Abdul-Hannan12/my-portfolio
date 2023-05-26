@@ -22,13 +22,13 @@ class auth extends database
         $password_2 = md5($password . $salt);
         return $password_2;
     }
-    public function upload_img($file)
+    public function upload_project_img($type, $file)
     {
         $allow = array('jpg', 'jpeg', 'png');
         $exntension = explode('.', $file['name']);
         $fileActExt = strtolower(end($exntension));
         $fileNew = rand() . "." . $fileActExt;
-        $filePath = '../../uploads/' . $fileNew;
+        $filePath = '../../assets/images/projects/'.$type.'/'. $fileNew;
 
         if (in_array($fileActExt, $allow)) {
             if ($file['size'] > 0 && $file['error'] == 0) {
@@ -38,6 +38,29 @@ class auth extends database
                     return false;
                 }
             }
+        } else {
+            return false;
+        }
+    }
+    public function delete_previous_image($id)
+    {
+        $previousImageFilename = $this->getProjectInfo($id, 'img');
+        $projectType = $this->getProjectInfo($id, 'type');
+        if (!empty($previousImageFilename)) {
+            $previousImagePath = '../../assets/images/projects/'.$projectType.'/'.$previousImageFilename;
+            if (file_exists($previousImagePath)) {
+                unlink($previousImagePath);
+            }
+        }
+    }
+    public function moveImageToChangedTypeFolder($id, $oldType, $newType)
+    {
+        $imgFileName = $this->getProjectInfo($id, 'img');
+        $sourcePath = '../../assets/images/projects/'.$oldType.'/'.$imgFileName;
+        $destinationPath = '../../assets/images/projects/'.$newType.'/'.$imgFileName;
+        $renamed = rename($sourcePath, $destinationPath);
+        if ($renamed) {
+            return true;
         } else {
             return false;
         }
@@ -93,7 +116,7 @@ class auth extends database
     // --------------------     PROJECT DATA      ------------------------- //
     public function addProject($project_name, $project_type, $project_desc, $project_url, $project_img)
     {
-        $img = $this->upload_img($project_img);
+        $img = $this->upload_project_img($project_type, $project_img);
         if($img){
 
             $sql = "INSERT into projects (name, type, description, url, img, created_on) VALUES (:name, :type, :desc, :url, :img, :created_on)";
@@ -115,6 +138,64 @@ class auth extends database
         }
         
     }
+ 
+    public function updateProject($project_id, $project_name, $project_type, $project_desc, $project_url, $project_img, $updateImage)
+    {
+        if($updateImage){
+            $this->delete_previous_image($project_id);
+            $img = $this->upload_project_img($project_type, $project_img);
+            if($img){
+                $sql = "UPDATE projects SET name=:name, type=:type, description=:desc, url=:url, img=:img WHERE pid=:pid";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':name', $project_name);
+                $stmt->bindParam(':type', $project_type);
+                $stmt->bindParam(':desc', $project_desc);
+                $stmt->bindParam(':url', $project_url);
+                $stmt->bindParam(':img', $img);
+                $stmt->bindParam(':pid', $project_id);
+                if ($stmt->execute()){
+                    return true;
+                } else {
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }else {
+            $previousType = $this->getProjectInfo($project_id, 'type');
+            $typeChanged = $previousType ? $previousType != $project_type : false;
+            if ($typeChanged){
+                $moved = $this->moveImageToChangedTypeFolder($project_id, $previousType, $project_type);
+                if($moved){
+                    $sql = "UPDATE projects SET name=:name, type=:type, description=:desc, url=:url WHERE pid=:pid";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(':name', $project_name);
+                    $stmt->bindParam(':type', $project_type);
+                    $stmt->bindParam(':desc', $project_desc);
+                    $stmt->bindParam(':url', $project_url);
+                    $stmt->bindParam(':pid', $project_id);
+                    if ($stmt->execute()){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }else{
+                $sql = "UPDATE projects SET name=:name, type=:type, description=:desc, url=:url WHERE pid=:pid";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->bindParam(':name', $project_name);
+                    $stmt->bindParam(':type', $project_type);
+                    $stmt->bindParam(':desc', $project_desc);
+                    $stmt->bindParam(':url', $project_url);
+                    $stmt->bindParam(':pid', $project_id);
+                    if ($stmt->execute()){
+                        return true;
+                    } else {
+                        return false;
+                    }
+            }
+        }
+    }
 
     public function fetchAllProjects()
     {
@@ -125,6 +206,41 @@ class auth extends database
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    public function fetchProject($id)
+    {
+        $sql = "SELECT * FROM projects WHERE pid = '$id' AND del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function getProjectInfo($id, $col)
+    {
+        $project = $this->fetchProject($id);
+        if ($project){
+            $colValue = $project[$col];
+            return $colValue;
+        }else{
+            return false;
+        }
+    }
+    public function deleteProject($id){
+
+        $sql = "UPDATE projects SET del = :del WHERE pid = :id";
+        $del = '1';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':del', $del);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    
 
     public function insert_recovery_Consignment($center, $product, $quantity, $amount, $uid, $bid)
     {

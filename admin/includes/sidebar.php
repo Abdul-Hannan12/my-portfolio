@@ -2,7 +2,7 @@
 $page =  basename($_SERVER['PHP_SELF']);
 ?>
 <!-- Sidebar Start -->
-<div class="sidebar pe-4 pb-3">
+<div class="sidebar pe-4 pb-3 overflow-hidden">
     <nav class="navbar bg-light navbar-light">
         <a href="index.html" class="navbar-brand mx-4 mb-3">
             <h3 class="text-primary"></i>Dashboard</h3>
