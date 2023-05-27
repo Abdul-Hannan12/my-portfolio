@@ -35,6 +35,16 @@ class auth extends database
         $count = $stmt->rowCount();
         return $count;
     }
+    public function fetch_user_profile($uid)
+    {
+        $sql = "SELECT * from users where uid=:uid";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':uid', $uid);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 
     // Fetching Data.........
     public function fetch_user($email, $password)
@@ -1059,15 +1069,5 @@ class auth extends database
         return $stmt->fetchAll();
     }
 
-    public function fetch_user_profile($uid)
-    {
-        $sql = "SELECT * from users where uid=:uid";
-        $stmt = $this
-            ->conn
-            ->prepare($sql);
-        $stmt->bindParam(':uid', $uid);
-        $stmt->execute();
-        return $stmt->fetch();
-    }
 }
 ?>

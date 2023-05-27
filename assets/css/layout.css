@@ -2526,6 +2526,15 @@
 	color: #FFF;
 }
 
+.section.contacts .alert-error {
+	display: none;
+}
+
+.section.contacts .alert-error p {
+	font-size: 14px;
+	color: #FFF;
+}
+
 
 .contact-form {
 	padding-right: 40px;

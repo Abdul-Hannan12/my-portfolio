@@ -3,12 +3,28 @@
 include './api/auth.php';
 $auth = new auth();
 
+// visitor info
 $agent=$_SERVER['HTTP_USER_AGENT'];
 $ip= $auth->getUserIP();
 $host_name = gethostbyaddr($ip);
 $platform = $_SERVER['HTTP_SEC_CH_UA_PLATFORM'];
 $browser_info = $_SERVER['HTTP_SEC_CH_UA'];
 $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
+
+$user = $auth->fetchUser(1);
+
+// user info
+$name = $user['name'];
+$email = $user['email'];
+$contact = $user['contact'];
+$age = $user['age'];
+$residence = $user['residence'];
+$freelance = $user['freelance'];
+$address = $user['address'];
+
+// user name with line break
+$nameArr = explode(" ", $name); 
+$nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 
 ?>
 
@@ -24,7 +40,7 @@ $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 	<meta name="author" content="Abdul Hannan" />
 
 	<!-- Title -->
-	<title>Abdul Hannan - Portfolio</title>
+	<title><?php echo $name ?> - Portfolio</title>
 
 	<!-- Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;display=swap" rel="stylesheet">
@@ -73,7 +89,7 @@ $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 			<div class="logo">
 				<a href="#">
 					<img class="logo-img" src="assets/images/logo.png" alt="" />
-					<span class="logo-lnk">Abdul <br />Hannan</span>
+					<span class="logo-lnk"><?php echo $nameLogo ?></span>
 				</a>
 			</div>
 
@@ -145,7 +161,7 @@ $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 
 						<!-- title -->
 						<h1 class="h-title">
-							Abdul <br />Hannan
+							<?php echo $nameLogo ?>
 						</h1>
 
 						<!-- content started -->
@@ -236,12 +252,12 @@ $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 					<!-- info list -->
 					<div class="info-list">
 						<ul>
-							<li><strong>Age:</strong> 21</li>
-							<li><strong>Residence:</strong> Pakistan</li>
-							<li><strong>Freelance:</strong> Available</li>
-							<li><strong>Address:</strong> Peshawar</li>
-							<li><strong>Phone:</strong> +92 332 8540680</li>
-							<li><strong>E-mail:</strong> abdulhannan8540680@gmail.com</li>
+							<li><strong>Age:</strong> <?php echo $age ?> </li>
+							<li><strong>Residence:</strong> <?php echo $residence ?> </li>
+							<li><strong>Freelance:</strong>  <?php echo $freelance == 1 ? 'Available' : 'Unavailable' ?></li>
+							<li><strong>Address:</strong> <?php echo $address ?> </li>
+							<li><strong>Phone:</strong> <?php echo $contact ?> </li>
+							<li><strong>E-mail:</strong> <?php echo $email ?> </li>
 						</ul>
 					</div>
 
@@ -716,23 +732,26 @@ $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 						<div class="alert-success">
 							<p>Thanks, your message is sent successfully.</p>
 						</div>
+						<div class="alert-error">
+							<p>The Message could not be sent.</p>
+						</div>
 					</div>
 
 					<!-- contact info -->
 					<div class="contact-info">
-						<div class="name">Abdul Hannan</div>
+						<div class="name"> <?php echo $name ?> </div>
 						<div class="subname">App &amp; Web Developer</div>
 						<div class="info-list">
 							<ul>
-								<li><strong>Age:</strong> 21 </li>
-								<li><strong>Residence:</strong> Pakistan </li>
-								<li><strong>Freelance:</strong> Available </li>
-								<li><strong>Address:</strong> Peshawar </li>
-								<li><strong>Phone:</strong> +92 332 8540680 </li>
-								<li><strong>Gmail:</strong> abdulhannan8540680 </li>
+								<li><strong>Age:</strong> <?php echo $age ?> </li>
+								<li><strong>Residence:</strong> <?php echo $residence ?> </li>
+								<li><strong>Freelance:</strong> <?php echo $freelance == 1 ? 'Available' : 'Unavailable' ?> </li>
+								<li><strong>Address:</strong>  <?php echo $address ?>  </li>
+								<li><strong>Phone:</strong> <?php echo $contact ?> </li>
+								<li><strong>Gmail:</strong>  <?php echo explode("@", $email)[0] ?>  </li>
 							</ul>
 						</div>
-						<div class="author">Abdul Hannan</div>
+						<div class="author"> <?php echo $name ?> </div>
 					</div>
 
 					<div class="clear"></div>
