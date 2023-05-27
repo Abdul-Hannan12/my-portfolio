@@ -72,6 +72,16 @@ class auth extends database
         return $stmt->fetchAll();
     }
 
+    public function getProjects()
+    {
+        $sql = "SELECT * from projects WHERE del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }
 
 ?>

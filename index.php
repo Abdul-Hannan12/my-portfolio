@@ -28,6 +28,8 @@ $address = $user['address'];
 $nameArr = explode(" ", $name); 
 $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 
+$projects = $auth->getProjects();
+
 ?>
 
 <!doctype html>
@@ -557,6 +559,77 @@ $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 					<div class="box-items">
 
 						<div id="projectsContainer"></div>
+						<?php foreach($projects as $project){ ?>
+							<div class="box-col f-<?php echo $project['type'] ?>">
+								<div class="box-item">
+									<div class="image">
+										<?php
+											echo $project['type'] == 'design'
+											?
+											'<a href="assets/images/projects/'.$project['type'].'/'.$project['img'].'" class="has-popup-image">'
+											:
+											'<a href="#popup-'.$project['pid'].'" class="has-popup-media">';
+										?>
+											<img src="<?php echo 'assets/images/projects/'.$project['type'].'/'.$project['img'] ?>" alt="project thumbnail" />
+											<span class="info">
+												<span class="centrize full-width">
+													<span class="vertical-center">
+														<i class="
+															<?php
+																switch($project['type']){
+																	case 'app':
+																		echo 'icon fas fa-mobile-alt';
+																		break;
+																	case 'web':
+																		echo 'icon fab fa-chrome';
+																		break;
+																	case 'design':
+																		echo 'icon fas fa-image';
+																		break;
+																	case 'other':
+																		echo 'icon fas fa-link';
+																		break;
+																}
+															?>
+														"></i>
+													</span>
+												</span>
+											</span>
+										</a>
+									</div>
+									<div class="desc">
+										<div class="category"><?php echo ucwords($project['type']) ?></div>
+										<?php
+											echo $project['type'] == 'design'
+											?
+											'<a href="'.'assets/images/projects/'.$project['type'].'/'.$project['img'].'" class="name has-popup-image">'.$project['name'].'</a>'
+											:
+											'<a href="#popup-'.$project['pid'].'" class="name has-popup-media">'.$project['name'].'</a>'
+										?>
+									</div>
+									<?php if($project['type'] != 'design'){ ?>
+										<div id="popup-<?php echo $project['pid'] ?>" class="popup-box mfp-fade mfp-hide">
+										<div class="content">
+											<div class="image">
+												<img src="<?php echo 'assets/images/projects/'.$project['type'].'/'.$project['img'] ?>" alt="project image">
+											</div>
+											<div class="desc">
+												<div class="category"><?php echo ucwords($project['type']) ?></div>
+												<h4><?php echo $project['name'] ?></h4>
+												<p> <?php echo $project['description'] ?> </p>
+												<?php
+													echo $project['type'] == 'web' || $project['type'] == 'other'
+													?
+													'<a target="_blank" href="'.$project['url'].'" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>'
+													: ''
+												?>
+												</div>
+											</div>
+										</div>
+									<?php } ?>
+								</div>
+							</div>
+						<?php } ?>
 
 					</div>
 
@@ -644,9 +717,6 @@ $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 
 	</div>
 
-	<!-- Custom Scripts -->
-	<script src="assets/js/custom/projects.js"></script>
-	<script src="assets/js/custom/script.js"></script>
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/velocity.min.js"></script>

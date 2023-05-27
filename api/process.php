@@ -32,9 +32,9 @@ if(isset($_POST['MODE']) && $_POST['MODE'] == 'contact'){
     $result = $api->addContact($name, $email, $msg);
 
     if ($result){
-        echo '{"msg" : "Project Updated successfully", "Status" : "Success"}';
+        echo '{"msg" : "Message sent successfully", "Status" : "Success"}';
     }else{
-        echo '{"msg" : "Data updation failed", "Status" : "Error"}';
+        echo '{"msg" : "Delivery failed", "Status" : "Error"}';
     }
 }
 
