@@ -12,6 +12,8 @@ $browser_info = $_SERVER['HTTP_SEC_CH_UA'];
 $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 
 $user = $auth->fetchUser(1);
+$codeSkills = $auth->fetchSkillsByType('coding');
+$otherSkills = $auth->fetchSkillsByType('other');
 
 // user info
 $name = $user['name'];
@@ -460,114 +462,18 @@ $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 					<!-- skills items-->
 					<div class="skills circles">
 						<ul>
-							<li>
-								<div class="progress p90"> <!-- p90 = 90% circle fill color -->
-									<div class="percentage"></div>
-									<span>90%</span>
-								</div>
-								<div class="name">Flutter</div>
-								<div class="single-post-text">
-									<p>
-										Cross Platform App development with flutter
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p80"> <!-- p75 = 75% circle fill color -->
-									<div class="percentage"></div>
-									<span>80%</span>
-								</div>
-								<div class="name">PHP, MYSQL</div>
-								<div class="single-post-text">
-									<p>
-										Server side scripting with PHP and MYSQL.
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p85"> <!-- p85 = 85% circle fill color -->
-									<div class="percentage"></div>
-									<span>85%</span>
-								</div>
-								<div class="name">JavaScript</div>
-								<div class="single-post-text">
-									<p>
-										Client side and Server side Javascript.
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p75"> <!-- p80 = 80% circle fill color -->
-									<div class="percentage"></div>
-									<span>75%</span>
-								</div>
-								<div class="name">React</div>
-								<div class="single-post-text">
-									<p>
-										Frontend Development using react.js
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p80"> <!-- p95 = 95% circle fill color -->
-									<div class="percentage"></div>
-									<span>80%</span>
-								</div>
-								<div class="name">HTML, CSS</div>
-								<div class="single-post-text">
-									<p>
-										web desiging using html and css
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p55"> <!-- p90 = 90% circle fill color -->
-									<div class="percentage"></div>
-									<span>55%</span>
-								</div>
-								<div class="name">Python</div>
-								<div class="single-post-text">
-									<p>
-										python scripting and playing with AI/ML
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p75"> <!-- p90 = 90% circle fill color -->
-									<div class="percentage"></div>
-									<span>75%</span>
-								</div>
-								<div class="name">Java</div>
-								<div class="single-post-text">
-									<p>
-										Native Android and Java Development
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p80"> <!-- p90 = 90% circle fill color -->
-									<div class="percentage"></div>
-									<span>80%</span>
-								</div>
-								<div class="name">Dart</div>
-								<div class="single-post-text">
-									<p>
-										Dart Programming and flutter backend
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="progress p75"> <!-- p90 = 90% circle fill color -->
-									<div class="percentage"></div>
-									<span>75%</span>
-								</div>
-								<div class="name">Node.js</div>
-								<div class="single-post-text">
-									<p>
-										Server Side Javascript for backend development.
-									</p>
-								</div>
-							</li>
+							<?php foreach($codeSkills as $skill){ ?>
+								<li>
+									<div class="progress p<?php echo $skill['percent'] ?>"> 
+										<div class="percentage"></div>
+										<span><?php echo $skill['percent'] ?>%</span>
+									</div>
+									<div class="name"><?php echo $skill['name'] ?></div>
+									<div class="single-post-text">
+										<p><?php echo $skill['description'] ?></p>
+									</div>
+								</li>
+							<?php } ?>
 						</ul>
 					</div>
 
@@ -587,58 +493,19 @@ $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 					<!-- skills items -->
 					<div class="skills percent">
 						<ul>
-							<li>
-								<div class="name">Graphic Design</div>
-								<div class="single-post-text">
-									<p>
-										Graphic Designing using adobe softwares and canva.
-									</p>
-								</div>
-								<div class="progress">
-									<div class="percentage" style="width: 70%;">
-										<span class="percent">70%</span>
+							<?php foreach($otherSkills as $skill){ ?>
+								<li>
+									<div class="name"><?php echo $skill['name'] ?></div>
+									<div class="single-post-text">
+										<p><?php echo $skill['description'] ?></p>
 									</div>
-								</div>
-							</li>
-							<li>
-								<div class="name">Photoshop</div>
-								<div class="single-post-text">
-									<p>
-										Professional Photo Editing, Color Correction and Restoration.
-									</p>
-								</div>
-								<div class="progress">
-									<div class="percentage" style="width: 80%;">
-										<span class="percent">80%</span>
+									<div class="progress">
+										<div class="percentage" style="width: <?php echo $skill['percent'] ?>%;">
+											<span class="percent"><?php echo $skill['percent'] ?>%</span>
+										</div>
 									</div>
-								</div>
-							</li>
-							<li>
-								<div class="name">Github</div>
-								<div class="single-post-text">
-									<p>
-										Version Cotrol and Collaborative Coding in Github
-									</p>
-								</div>
-								<div class="progress">
-									<div class="percentage" style="width: 90%;">
-										<span class="percent">90%</span>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="name">Firebase</div>
-								<div class="single-post-text">
-									<p>
-										Using Firebase Services like auth or database for Backend.
-									</p>
-								</div>
-								<div class="progress">
-									<div class="percentage" style="width: 85%;">
-										<span class="percent">85%</span>
-									</div>
-								</div>
-							</li>
+								</li>
+							<?php } ?>
 						</ul>
 					</div>
 

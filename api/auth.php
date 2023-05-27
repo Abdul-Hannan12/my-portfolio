@@ -61,6 +61,17 @@ class auth extends database
         return $stmt->fetch();
     }
 
+    public function fetchSkillsByType($type)
+    {
+        $sql = "SELECT * from skills WHERE type=:type AND del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':type', $type);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }
 
 ?>
