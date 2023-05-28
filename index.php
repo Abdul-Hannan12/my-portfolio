@@ -30,6 +30,15 @@ $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 
 $projects = $auth->getProjects();
 
+function formatDescription($desc){
+	$arr = explode("(skipline)", $desc);
+	$description = '';
+	foreach($arr as $i){
+		$description .= $i.'<br><br>';
+	}
+	return $description;
+}
+
 ?>
 
 <!doctype html>
@@ -188,7 +197,7 @@ $projects = $auth->getProjects();
 							</div>
 
 							<!-- button -->
-							<a href="#" class="btn">
+							<a href="#" id="contactMeBtn" class="btn">
 								<span class="animated-button"><span>Contact Me</span></span>
 								<i class="icon fas fa-chevron-right"></i>
 							</a>
@@ -616,12 +625,14 @@ $projects = $auth->getProjects();
 											<div class="desc">
 												<div class="category"><?php echo ucwords($project['type']) ?></div>
 												<h4><?php echo $project['name'] ?></h4>
-												<p> <?php echo $project['description'] ?> </p>
+												<p> <?php echo formatDescription($project['description']) ?> </p>
 												<?php
-													echo $project['type'] == 'web' || $project['type'] == 'other'
-													?
-													'<a target="_blank" href="'.$project['url'].'" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>'
-													: ''
+													if ($project['url'] != ""){
+														echo $project['type'] == 'web' || $project['type'] == 'other'
+														?
+														'<a target="_blank" href="'.$project['url'].'" class="btn"> <span class="animated-button"> <span> View Project </span> </span> <i class="icon fas fa-chevron-right"> </i> </a>'
+														: '';
+													}
 												?>
 												</div>
 											</div>
