@@ -13,7 +13,10 @@ $no=1;
         <div class="col-12 px-4">
             <!-- Stock Details -->
             <div class="bg-white rounded p-4">
-                <h4 class="title mb-4"> Trash </h4>
+                <div class="headCon d-flex align-items-center justify-content-between">
+                    <h4 class="title mb-4"> Trash </h4>
+                    <div class="btn btn-primary btn_clear">Clear Trash</div>
+                </div>
 
                 <div class="table-responsive">
 
@@ -114,7 +117,6 @@ $no=1;
             text: "Do you really want to recover this item?",
             icon: "warning",
             buttons: true,
-            dangerMode: true,
         }).then((willDelete) => {
                 if (willDelete) {
                     $tr = $(this).closest('tr');
@@ -139,6 +141,39 @@ $no=1;
                     });
                 } else {
                     swal("recovering cancelled!");
+                }
+            });
+});
+
+    $('.btn_clear').on('click', function () {
+
+        swal({
+            title: "Are you sure?",
+            text: "Do you really want to permanently delete all the items?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: "./api/process.php",
+                        data:  "MODE=clearTrash",
+                        success: function(data) {
+                            var { Status } = JSON.parse(data) 
+                            if (Status == 'Success'){
+                                swal("Trash Cleared Successfully!", {icon: "success"}).then(()=>{window.location.reload()});
+                            }else{
+                                swal(
+                                    'Opss',
+                                    'Something Went Wrong!',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                } else {
+                    swal("deletion cancelled!");
                 }
             });
 });

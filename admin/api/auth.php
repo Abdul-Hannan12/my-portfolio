@@ -423,6 +423,19 @@ class auth extends database
             return false;
         }
     }
+    public function clearTrash()
+    {
+        $trash = $this->getTrash();
+        $deleted = false;
+        foreach($trash as $item){
+            $deleted = $this->deleteTrash($item['tid']);
+        }
+        if ($deleted){
+            return true;
+        }else{
+            return false;
+        }
+    }
     /* ====================  TRASH DATA END  ==================== */
     
 }

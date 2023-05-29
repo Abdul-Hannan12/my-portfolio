@@ -213,6 +213,17 @@ if(isset($_SESSION['isLoggedIn'])){
         }
     }
 
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "clearTrash") {
+
+        $result = $api->clearTrash();
+
+        if ($result) {
+            echo '{"msg" : "Data Deleted Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+
 }
 
 ?>
