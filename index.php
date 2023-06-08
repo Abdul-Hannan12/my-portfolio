@@ -28,6 +28,7 @@ $address = $user['address'];
 $nameArr = explode(" ", $name); 
 $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
 
+// PROJECTS DATA
 $projects = $auth->getProjects();
 
 function formatDescription($desc){
@@ -38,6 +39,9 @@ function formatDescription($desc){
 	}
 	return $description;
 }
+
+// ABOUT DATA
+$aboutParas = $auth->fetchAboutParas();
 
 ?>
 
@@ -225,41 +229,13 @@ function formatDescription($desc){
 
 					<!-- text -->
 					<div class="cols">
-						<div class="col col-full">
-							<div class="single-post-text">
-								<p>
-									Hi, I'm Abdul Hannan, a mobile app and web developer with a true passion for programming. I've been developing for over a year now and have gained a wealth of knowledge in programming.
-								</p>
+						<?php foreach($aboutParas as $para) { ?>
+							<div class="col <?php echo $para['length'] == 1 ? 'col-full' : 'col' ?>">
+								<div class="single-post-text">
+									<p><?php echo $para['para'] ?></p>
+								</div>
 							</div>
-						</div>
-						<div class="col">
-							<div class="single-post-text">
-								<p>
-									I truly enjoy programming, and it's become much more than just a career for me - it's a passion. Whether I'm working on a new mobile app or building a website, I approach each project with enthusiasm and creativity, always striving to push the boundaries of what's possible.
-								</p>
-							</div>
-						</div>
-						<div class="col">
-							<div class="single-post-text">
-								<p>
-									I've become proficient in a variety of programming languages and software design principles, and I'm constantly learning and expanding my skillset. I believe that there's always more to discover in the world of programming, and I'm excited to continue exploring new horizons and tackling new challenges.
-								</p>
-							</div>
-						</div>
-						<div class="col col-full">
-							<div class="single-post-text">
-								<p>
-									For me, programming is all about problem-solving and creating something that is both functional and beautiful. I love the process of taking an idea and turning it into a fully-realized project, and seeing the impact that it can have in the world.
-								</p>
-							</div>
-						</div>
-						<div class="col col-full">
-							<div class="single-post-text">
-								<p>
-									Overall, I'm proud of what I've accomplished so far as a developer, and I'm excited to see where my passion for programming will take me in the future.
-								</p>
-							</div>
-						</div>
+						<?php } ?>
 					</div>
 
 					<!-- info list -->

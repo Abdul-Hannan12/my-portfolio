@@ -81,6 +81,15 @@ class auth extends database
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function fetchAboutParas()
+    {
+        $sql = "SELECT * FROM about_paras WHERE del != 1 ORDER BY about_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 
 }
 
