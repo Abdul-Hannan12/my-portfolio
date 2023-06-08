@@ -223,6 +223,45 @@ if(isset($_SESSION['isLoggedIn'])){
             echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
         }
     }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "addParagraph") {
+
+        $para = $api->filter_data($_POST['para']);
+        $order = $api->filter_data($_POST['order']);
+        $length = $api->filter_data($_POST['length']);
+        $uid = $_SESSION['uid'];
+
+        $result = $api->addAbout($para, $order, $length, $uid);
+        if ($result) {
+            echo '{"msg" : "Data Added Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateAbout") {
+
+        $para = $api->filter_data($_POST['para']);
+        $order = $api->filter_data($_POST['order']);
+        $length = $api->filter_data($_POST['length']);
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->updateAbout($id, $para, $order, $length);
+        if ($result) {
+            echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "deleteAbout") {
+
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->deleteAbout($id);
+        if ($result) {
+            echo '{"msg" : "Data Deleted Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
 
 }
 

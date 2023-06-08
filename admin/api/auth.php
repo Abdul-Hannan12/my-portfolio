@@ -437,6 +437,78 @@ class auth extends database
         }
     }
     /* ====================  TRASH DATA END  ==================== */
+
+    /* ====================  ABOUT DATA START  ==================== */
+    public function fetchAboutParas($uid)
+    {
+        $sql = "SELECT * FROM about_paras WHERE uid=:uid AND del != 1 ORDER BY about_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':uid', $uid);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function addAbout($para, $order, $length, $uid)
+    {
+        $sql = "INSERT INTO about_paras (para, about_order, length, uid, created_on) VALUES (:para, :order, :length, :uid, :date)";
+        $date = $this->date_now();
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':para', $para);
+        $stmt->bindParam(':order', $order);
+        $stmt->bindParam(':length', $length);
+        $stmt->bindParam(':uid', $uid);
+        $stmt->bindParam(':date', $date);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function updateAbout($aid, $para, $order, $length)
+    {
+        $sql = "UPDATE about_paras SET para=:para, about_order=:order, length=:length WHERE aid=:id";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':id', $aid);
+        $stmt->bindParam(':para', $para);
+        $stmt->bindParam(':order', $order);
+        $stmt->bindParam(':length', $length);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function deleteAbout($id){
+
+        $sql = "UPDATE about_paras SET del = :del WHERE aid = :id";
+        $del = '1';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':del', $del);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            $trash_sql = "INSERT INTO trash (table_name, item_id, created_on) VALUES (:table, :id, :date)";
+            $date = $this->date_now();
+            $table = 'about_paras';
+            $trash_stmt = $this->conn->prepare($trash_sql);
+            $trash_stmt->bindParam(':table', $table);
+            $trash_stmt->bindParam(':id', $id);
+            $trash_stmt->bindParam(':date', $date);
+            if($trash_stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }
+    /* ====================  ABOUT DATA END  ==================== */
     
 }
 ?>

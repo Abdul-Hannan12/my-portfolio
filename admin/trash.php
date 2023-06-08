@@ -44,7 +44,7 @@ $no=1;
                                     <tr >
                                         <th style="vertical-align: middle;" scope="row"> <?php echo $no++ ?> </th>
                                         <td class="d-none"><?php echo $item['tid'] ?></td>
-                                        <td style="vertical-align: middle;"><?php echo $data['name'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $table == 'about_paras' ? $data['para'] : $data['name'] ?></td>
                                         <td style="vertical-align: middle;"><?php echo ucwords(substr($item['table_name'], 0, -1)) ?></td>
                                         <td style="vertical-align: middle;">
                                             <button class="btn btn-sm btn-info btn_recover"><i class="fas fa-check"></i></button>
