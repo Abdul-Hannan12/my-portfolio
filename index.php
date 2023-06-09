@@ -23,6 +23,7 @@ $age = $user['age'];
 $residence = $user['residence'];
 $freelance = $user['freelance'];
 $address = $user['address'];
+$bio = $user['bio'];
 
 // user name with line break
 $nameArr = explode(" ", $name); 
@@ -196,9 +197,7 @@ $aboutParas = $auth->fetchAboutParas();
 							</div>
 
 							<!-- text -->
-							<div class="h-text">
-								I am a confident, motivated, and skilled web and app developer who has amassed a variety of abilities throughout time that ensure I will perform highly in this role.
-							</div>
+							<div class="h-text"><?php echo $bio ?></div>
 
 							<!-- button -->
 							<a href="#" id="contactMeBtn" class="btn">
@@ -467,7 +466,7 @@ $aboutParas = $auth->fetchAboutParas();
 				</div>
 			</div>
 
-			<!-- Section Design Skills -->
+			<!-- Section Other Skills -->
 			<div class="section skills" id="section-skills">
 				<div class="content">
 
