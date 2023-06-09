@@ -510,6 +510,218 @@ class auth extends database
 
     }
     /* ====================  ABOUT DATA END  ==================== */
+
+    /* ====================  EDUCATION DATA START  ==================== */
+    public function fetcExperiences()
+    {
+        $sql = "SELECT * FROM educations WHERE del != 1 ORDER BY education_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function addEducation($institute, $session, $desc, $order)
+    {
+        $sql = "INSERT INTO educations (institute, session, description, education_order, created_on) VALUES (:inst, :session, :desc, :order, :date)";
+        $date = $this->date_now();
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':inst', $institute);
+        $stmt->bindParam(':session', $session);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':order', $order);
+        $stmt->bindParam(':date', $date);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function updateEducation($id, $institute, $session, $desc, $order)
+    {
+        $sql = "UPDATE educations SET institute=:inst, session=:session, description=:desc, education_order=:order WHERE edid=:id";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':inst', $institute);
+        $stmt->bindParam(':session', $session);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':order', $order);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function deleteEducation($id){
+
+        $sql = "UPDATE educations SET del = :del WHERE edid = :id";
+        $del = '1';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':del', $del);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            $trash_sql = "INSERT INTO trash (table_name, item_id, created_on) VALUES (:table, :id, :date)";
+            $date = $this->date_now();
+            $table = 'educations';
+            $trash_stmt = $this->conn->prepare($trash_sql);
+            $trash_stmt->bindParam(':table', $table);
+            $trash_stmt->bindParam(':id', $id);
+            $trash_stmt->bindParam(':date', $date);
+            if($trash_stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+    }
+    /* ====================  EDUCATION DATA END  ==================== */
+
+    /* ====================  EXPERIENCE DATA START  ==================== */
+    public function fetchExperiences()
+    {
+        $sql = "SELECT * FROM experiences WHERE del != 1 ORDER BY exp_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function addExperience($org, $duration, $desc, $order)
+    {
+        $sql = "INSERT INTO experiences (organization, duration, description, exp_order, created_on) VALUES (:inst, :session, :desc, :order, :date)";
+        $date = $this->date_now();
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':inst', $org);
+        $stmt->bindParam(':session', $duration);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':order', $order);
+        $stmt->bindParam(':date', $date);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function updateExperience($id, $org, $duration, $desc, $order)
+    {
+        $sql = "UPDATE experiences SET organization=:inst, duration=:session, description=:desc, exp_order=:order WHERE exid=:id";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':inst', $org);
+        $stmt->bindParam(':session', $duration);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':order', $order);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function deleteExperience($id){
+
+        $sql = "UPDATE experiences SET del = :del WHERE exid = :id";
+        $del = '1';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':del', $del);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            $trash_sql = "INSERT INTO trash (table_name, item_id, created_on) VALUES (:table, :id, :date)";
+            $date = $this->date_now();
+            $table = 'experiences';
+            $trash_stmt = $this->conn->prepare($trash_sql);
+            $trash_stmt->bindParam(':table', $table);
+            $trash_stmt->bindParam(':id', $id);
+            $trash_stmt->bindParam(':date', $date);
+            if($trash_stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    /* ====================  EXPERIENCE DATA END  ==================== */
+
+    /* ====================  SERVICES DATA START  ==================== */
+    public function fetchServices()
+    {
+        $sql = "SELECT * FROM services WHERE del != 1 ORDER BY service_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    public function addService($name, $desc, $order)
+    {
+        $sql = "INSERT INTO services (name, description, service_order, created_on) VALUES (:name, :desc, :order, :date)";
+        $date = $this->date_now();
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':order', $order);
+        $stmt->bindParam(':date', $date);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function updateService($id, $name, $desc, $order)
+    {
+        $sql = "UPDATE services SET name=:name, description=:desc, service_order=:order WHERE sid=:id";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':desc', $desc);
+        $stmt->bindParam(':order', $order);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function deleteService($id){
+
+        $sql = "UPDATE services SET del = :del WHERE sid = :id";
+        $del = '1';
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':del', $del);
+        $stmt->bindParam(':id', $id);
+        if ($stmt->execute()){
+            $trash_sql = "INSERT INTO trash (table_name, item_id, created_on) VALUES (:table, :id, :date)";
+            $date = $this->date_now();
+            $table = 'services';
+            $trash_stmt = $this->conn->prepare($trash_sql);
+            $trash_stmt->bindParam(':table', $table);
+            $trash_stmt->bindParam(':id', $id);
+            $trash_stmt->bindParam(':date', $date);
+            if($trash_stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    /* ====================  SERVICES DATA END  ==================== */
     
 }
 ?>
