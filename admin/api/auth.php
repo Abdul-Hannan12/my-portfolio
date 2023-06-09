@@ -321,8 +321,8 @@ class auth extends database
     
 
     /* ====================  PROFILE DATA START  ==================== */
-    public function update_profile($name, $email, $contact, $age, $residence, $address, $freelance, $id){
-        $sql = 'UPDATE users SET name = :name, email = :email, contact =:contact, age=:age, residence=:res, freelance=:freelance, address=:addr WHERE uid = :id ';
+    public function update_profile($name, $email, $contact, $age, $residence, $address, $freelance, $bio, $id){
+        $sql = 'UPDATE users SET name = :name, email = :email, contact =:contact, age=:age, residence=:res, freelance=:freelance, bio=:bio, address=:addr WHERE uid = :id ';
         $stmt = $this
         ->conn
         ->prepare($sql);
@@ -332,6 +332,7 @@ class auth extends database
         $stmt->bindParam(':age', $age);
         $stmt->bindParam(':res', $residence);
         $stmt->bindParam(':freelance', $freelance);
+        $stmt->bindParam(':bio', $bio);
         $stmt->bindParam(':addr', $address);
         $stmt->bindParam(':id', $id);
         if ($stmt->execute()){

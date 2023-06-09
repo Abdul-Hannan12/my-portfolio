@@ -177,9 +177,10 @@ if(isset($_SESSION['isLoggedIn'])){
         $residence = $api->filter_data($_POST['residence']);
         $address = $api->filter_data($_POST['address']);
         $freelance = $api->filter_data($_POST['freelance']);
+        $bio = $api->filter_data($_POST['bio']);
         $id = $_SESSION['uid'];
 
-        $result = $api->update_profile($name, $email, $contact, $age, $residence, $address, $freelance, $id);
+        $result = $api->update_profile($name, $email, $contact, $age, $residence, $address, $freelance, $bio, $id);
         if ($result) {
             $_SESSION['username'] = $username;
             echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';

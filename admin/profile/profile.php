@@ -80,6 +80,13 @@ if(isset($_SESSION['isLoggedIn'])){
                         </select>
                     </div>
 
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <label for="bio" class="form-label">
+                            Bio
+                        </label>
+                        <textarea class="form-control h-auto" name="bio" id="bio" rows="5"><?php echo $user['bio'] ?></textarea>
+                    </div>
+
                     <div class="col text-end mt-auto mb-4"> <button class="btn btn-primary"> Update </button>
                     </div>
                 </div>
@@ -120,6 +127,10 @@ if(isset($_SESSION['isLoggedIn'])){
         }
         else if($("#freelance").val() == ""){
             alert("Please Select Freelance Status");
+            return;
+        }
+        else if($("#bio").val() == ""){
+            alert("Please Enter Bio");
             return;
         }
         else{
