@@ -319,6 +319,59 @@ if(isset($_SESSION['isLoggedIn'])){
         }
     }
 
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "getService"){
+        
+        $id = $_POST['id'];
+        
+        $result = $api->fetchService($id);
+
+        if ($result){
+            echo json_encode($result);
+        }else{
+            echo '{"msg" : "Data Could not be fetched", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "addService") {
+
+        $name = $api->filter_data($_POST['name']);
+        $order = $api->filter_data($_POST['order']);
+        $desc = $api->filter_data($_POST['desc']);
+
+        $result = $api->addService($name, $desc, $order);
+        if ($result) {
+            echo '{"msg" : "Data Added Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateService") {
+
+        $name = $api->filter_data($_POST['name']);
+        $order = $api->filter_data($_POST['order']);
+        $desc = $api->filter_data($_POST['desc']);
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->updateService($id, $name, $desc, $order);
+        if ($result) {
+            echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "deleteService") {
+
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->deleteService($id);
+        if ($result) {
+            echo '{"msg" : "Data Deleted Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+
 }
 
 ?>

@@ -3,7 +3,7 @@ include '../includes/header.php';
 if(isset($_SESSION['isLoggedIn'])){
     include '../api/auth.php';
     $auth = new auth();
-    $educations = $auth->fetchEducations();
+    $educations = $auth->fetchServices();
     $no=1;
 }
 
@@ -13,21 +13,14 @@ if(isset($_SESSION['isLoggedIn'])){
 <div class="container-fluid mt-4">
     <div class="row px-sm-5 px-4">
         <div class="bg-white rounded px-sm-5 px-3 py-4">
-            <h4 class="title mb-4"> Education </h4>
-            <form id="addEducation">
+            <h4 class="title mb-4"> Serivces </h4>
+            <form id="addService">
                 <div class="row">
                     <div class="col-md-4 col-sm-6 mb-4">
-                        <label for="institute" class="form-label">
-                            Institute
+                        <label for="name" class="form-label">
+                            Name
                         </label>
-                        <input type="text" name="institute" id="institute" class="form-control">
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 mb-4">
-                        <label for="session" class="form-label">
-                            Session
-                        </label>
-                        <input type="text" id="session" name="session" class="form-control">
+                        <input type="text" name="name" id="name" class="form-control">
                     </div>
 
                     <div class="col-md-2 col-sm-6 mb-4">
@@ -60,8 +53,8 @@ if(isset($_SESSION['isLoggedIn'])){
                             <tr>
                                 <th>#</th>
                                 <th class="d-none">#</th>
-                                <th>Institute</th>
-                                <th>Session</th>
+                                <th>Name</th>
+                                <th>Description</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -70,9 +63,9 @@ if(isset($_SESSION['isLoggedIn'])){
                                 <?php foreach($educations as $education){ ?>
                                     <tr >
                                         <th style="vertical-align: middle;" scope="row"> <?php echo $no++ ?> </th>
-                                        <td class="d-none"><?php echo $education['edid'] ?></td>
-                                        <td style="vertical-align: middle;"><?php echo $education['institute'] ?></td>
-                                        <td style="vertical-align: middle;"><?php echo $education['session'] ?></td>
+                                        <td class="d-none"><?php echo $education['sid'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $education['name'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $education['description'] ?></td>
                                         <td style="vertical-align: middle;">
                                             <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
                                             &nbsp;&nbsp;&nbsp;
@@ -93,21 +86,17 @@ if(isset($_SESSION['isLoggedIn'])){
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Skill</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Service</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
         
-        <form id="updateEducation">
+        <form id="updateService">
             <div class="row">
                 <div class="col-sm-11 mb-4">
                     <input type="hidden" name="id" id="id">
-                    <label for="inst" class="form-label">Institute</label>
-                    <input type="text" class="form-control" id="inst" name="institute">
-                </div>
-                <div class="col-sm-11 mb-4">
-                    <label for="sess" class="form-label">Session</label>
-                    <input type="text" class="form-control" id="sess" name="session">
+                    <label for="nam" class="form-label">Institute</label>
+                    <input type="text" class="form-control" id="nam" name="name">
                 </div>
                 <div class="col-sm-11 mb-4">
                     <label for="ord" class="form-label">Order</label>
@@ -133,14 +122,10 @@ if(isset($_SESSION['isLoggedIn'])){
 
 <script>
 
-     $("#addEducation").submit(function(e) {
+     $("#addService").submit(function(e) {
         e.preventDefault();
-        if($("#institute").val() == ""){
-            alert("Please Enter Institute");
-            return;
-        }
-        else if($("#session").val() == ""){
-            alert("Please Enter Session");
+        if($("#name").val() == ""){
+            alert("Please Enter Service Name");
             return;
         }
         else if($("#order").val() == ""){
@@ -155,12 +140,12 @@ if(isset($_SESSION['isLoggedIn'])){
             $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  "MODE=addEducation&" + $("#addEducation").serialize(),
+            data:  "MODE=addService&" + $("#addService").serialize(),
             success: function(data) {
                 let { Status } = JSON.parse(data);
                 if(Status == "Success"){
                     swal({
-                        text: "Education Added!",
+                        text: "Service Added!",
                         icon: 'success'
                     }).then(function() {
                         window.location.reload()
@@ -186,15 +171,14 @@ if(isset($_SESSION['isLoggedIn'])){
         $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  `MODE=getEducation&id=${$id}`,
+            data:  `MODE=getService&id=${$id}`,
             success: function(data) {
                 var eduData = JSON.parse(data);
-                if(eduData['Status'] != "Error" && eduData['edid'] == $id){
+                if(eduData['Status'] != "Error" && eduData['sid'] == $id){
 
-                    $('#id').val(eduData['edid']);
-                    $('#inst').val(eduData['institute']);
-                    $('#sess').val(eduData['session']);
-                    $('#ord').val(eduData['education_order']);
+                    $('#id').val(eduData['sid']);
+                    $('#nam').val(eduData['name']);
+                    $('#ord').val(eduData['service_order']);
                     $('#desp').val(eduData['description']);
 
                 }
@@ -205,7 +189,7 @@ if(isset($_SESSION['isLoggedIn'])){
 $('.table-responsive').on('click','.btn_delete',function () {
         swal({
             title: "Are you sure?",
-            text: "Do you really want to delete this education",
+            text: "Do you really want to delete this service",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -217,11 +201,11 @@ $('.table-responsive').on('click','.btn_delete',function () {
                     $.ajax({
                         type: "POST",
                         url: "../api/process.php",
-                        data:  "MODE=deleteEducation&id="+id,
+                        data:  "MODE=deleteService&id="+id,
                         success: function(data) {
                             var { Status } = JSON.parse(data) 
                             if (Status == 'Success'){
-                                swal("Skill has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
+                                swal("Service has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
                             }else{
                                 swal(
                                     'Opss',
@@ -232,23 +216,23 @@ $('.table-responsive').on('click','.btn_delete',function () {
                         }
                     });
                 } else {
-                    swal("Skill not deleted!");
+                    swal("Service not deleted!");
                 }
             });
 });
 
-$("#updateEducation").submit(function(event) {
+$("#updateService").submit(function(event) {
         event.preventDefault();
         $.ajax({
                 type: "POST",
                 url: "../api/process.php",
-                data:  "MODE=updateEducation&" + $("#updateEducation").serialize(),
+                data:  "MODE=updateService&" + $("#updateService").serialize(),
                 success: function(data) {
                     var {Status} = JSON.parse(data)
                             if(Status == "Success"){
                                 swal(
                                     'Welldone',
-                                    'Education Updated Successfully!',
+                                    'Service Updated Successfully!',
                                     'success'
                                 ).then(function() {
                                     window.location.reload();
@@ -256,7 +240,7 @@ $("#updateEducation").submit(function(event) {
                             }else{
                                 swal(
                                     'Opss',
-                                    'Education Not Updated',
+                                    'Service Not Updated',
                                     'error'
                                 )
                             }

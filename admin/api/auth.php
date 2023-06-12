@@ -514,7 +514,7 @@ class auth extends database
     /* ====================  EDUCATION DATA START  ==================== */
     public function fetchEducations()
     {
-        $sql = "SELECT * FROM educations WHERE del != 1 ORDER BY education_order ASC";
+        $sql = "SELECT * FROM educations WHERE del != '1' ORDER BY education_order ASC";
         $stmt = $this
             ->conn
             ->prepare($sql);
@@ -595,7 +595,7 @@ class auth extends database
     /* ====================  EXPERIENCE DATA START  ==================== */
     public function fetchExperiences()
     {
-        $sql = "SELECT * FROM experiences WHERE del != 1 ORDER BY exp_order ASC";
+        $sql = "SELECT * FROM experiences WHERE del != '1' ORDER BY exp_order ASC";
         $stmt = $this
             ->conn
             ->prepare($sql);
@@ -675,7 +675,7 @@ class auth extends database
     /* ====================  SERVICES DATA START  ==================== */
     public function fetchServices()
     {
-        $sql = "SELECT * FROM services WHERE del != 1 ORDER BY service_order ASC";
+        $sql = "SELECT * FROM services WHERE del != '1' ORDER BY service_order ASC";
         $stmt = $this
             ->conn
             ->prepare($sql);
@@ -684,7 +684,7 @@ class auth extends database
     }
     public function fetchService($id)
     {
-        $sql = "SELECT * FROM services WHERE edid = '$id' AND del != '1'";
+        $sql = "SELECT * FROM services WHERE sid = '$id' AND del != '1'";
         $stmt = $this
             ->conn
             ->prepare($sql);

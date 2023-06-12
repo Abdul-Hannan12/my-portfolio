@@ -93,7 +93,7 @@ if(isset($_SESSION['isLoggedIn'])){
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Skill</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Education</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -221,7 +221,7 @@ $('.table-responsive').on('click','.btn_delete',function () {
                         success: function(data) {
                             var { Status } = JSON.parse(data) 
                             if (Status == 'Success'){
-                                swal("Skill has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
+                                swal("Education has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
                             }else{
                                 swal(
                                     'Opss',
@@ -232,7 +232,7 @@ $('.table-responsive').on('click','.btn_delete',function () {
                         }
                     });
                 } else {
-                    swal("Skill not deleted!");
+                    swal("Education not deleted!");
                 }
             });
 });

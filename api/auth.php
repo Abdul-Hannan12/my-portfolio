@@ -90,6 +90,15 @@ class auth extends database
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function fetchEducations()
+    {
+        $sql = "SELECT * FROM educations WHERE del != 1 ORDER BY education_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 
 }
 

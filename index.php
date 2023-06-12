@@ -44,61 +44,12 @@ function formatDescription($desc){
 // ABOUT DATA
 $aboutParas = $auth->fetchAboutParas();
 
+// EDUCATION DATA
+$educations = $auth->fetchEducations();
+
 ?>
 
-<!doctype html>
-<html lang="en-US">
-<head>
-
-	<!-- Meta -->
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-	<meta name="description" content="Abdul Hannan Personal Portfolio" />
-	<meta name="keywords" content="flutter, flutter developer, developer, web developer, app developer, abdul hannan, hannan, rocky, rocky khan, resume, personal portfolio, cv, portfolio" />
-	<meta name="author" content="Abdul Hannan" />
-
-	<!-- Title -->
-	<title><?php echo $name ?> - Portfolio</title>
-
-	<!-- Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Mr+Dafoe&amp;display=swap" rel="stylesheet">
-
-	<!-- Favicon -->
-	<link rel="shortcut icon" href="assets/images/favicons/logo.ico" type="image/x-icon">
-
-	<!-- Styles -->
-	<link rel="stylesheet" href="assets/css/basic.css" />
-	<link rel="stylesheet" href="assets/css/layout.css" />
-	<link rel="stylesheet" href="assets/css/magnific-popup.css" />
-	<link rel="stylesheet" href="assets/css/animate.css" />
-	<link rel="stylesheet" href="assets/css/jarallax.css" />
-	<link rel="stylesheet" href="assets/css/owl.carousel.css" />
-	<link rel="stylesheet" href="assets/css/swiper.css" />
-	<link rel="stylesheet" href="css/fontawesome.css" />
-	<!-- Custom Styles -->
-	<link rel="stylesheet" href="assets/css/custom/style.css">
-	
-</head>
-
-<body class="home">
-
-	<!-- Preloader -->
-	<div class="preloader">
-		<div class="box-1">
-			<div class="centrize full-width">
-				<div class="vertical-center">
-					<div class="spinner">
-						<div class="lines"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="box-2"></div>
-	</div>
-
-	<!-- Container -->
-	<div class="container">
+<?php include './includes/header.php' ?>
 
 		<!-- Header -->
 		<header class="header">
@@ -386,43 +337,21 @@ $aboutParas = $auth->fetchAboutParas();
 					<div class="content-carousel">
 						<div class="owl-carousel" data-slidesview="2" data-slidesview_mobile="1">
 
-							<div class="item">
-								<div class="resume-item active">
-									<div class="date">2020-2024</div>
-									<div class="name">Agriculture University <br />Peshawar</div>
-									<div class="single-post-text">
-										<p>
-											Studying Computer Science at the University of Agriculture Peshawar, fueling my tech-driven aspirations.
-										</p>
+							<?php foreach($educations as $edu){ ?>
+
+								<div class="item">
+									<div class="resume-item">
+										<div class="date"><?php echo $edu['session'] ?></div>
+										<div class="name"><?php echo $edu['institute'] ?></div>
+										<div class="single-post-text">
+											<p><?php echo $edu['description'] ?></p>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div class="item">
-								<div class="resume-item">
-									<div class="date">2018-2020</div>
-									<div class="name">Edwardes College <br />Peshawar</div>
-									<div class="single-post-text">
-										<p>
-											Completed pre-engineering studies at Edwardes College Peshawar, fueling my engineering passion for future pursuits.
-										</p>
-									</div>
-								</div>
-							</div>
+							<?php } ?>
 
-							<div class="item">
-								<div class="resume-item">
-									<div class="date">2018</div>
-									<div class="name">Peshawar Model <br />School</div>
-									<div class="single-post-text">
-										<p>
-											Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
-										</p>
-									</div>
-								</div>
-							</div>
-
-							</div>
+						</div>
 
 						<!-- navigation -->
 						<div class="navs">
@@ -701,22 +630,4 @@ $aboutParas = $auth->fetchAboutParas();
 			</div>
 		</footer>
 
-	</div>
-
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/velocity.min.js"></script>
-	<script src="assets/js/jquery.validate.js"></script>
-	<script src="assets/js/magnific-popup.js"></script>
-	<script src="assets/js/typed.js"></script>
-	<script src="assets/js/jarallax.js"></script>
-	<script src="assets/js/jarallax-video.js"></script>
-	<script src="assets/js/jarallax-element.js"></script>
-	<script src="assets/js/imagesloaded.pkgd.js"></script>
-	<script src="assets/js/isotope.pkgd.js"></script>
-	<script src="assets/js/owl.carousel.js"></script>
-	<script src="assets/js/swiper.js"></script>
-	<script src="assets/js/scripts.min.js"></script>
-
-</body>
-</html>
+	<?php include './includes/footer.php' ?>
