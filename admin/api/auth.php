@@ -512,7 +512,7 @@ class auth extends database
     /* ====================  ABOUT DATA END  ==================== */
 
     /* ====================  EDUCATION DATA START  ==================== */
-    public function fetcExperiences()
+    public function fetchEducations()
     {
         $sql = "SELECT * FROM educations WHERE del != 1 ORDER BY education_order ASC";
         $stmt = $this
@@ -520,6 +520,15 @@ class auth extends database
             ->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+    public function fetchEducation($id)
+    {
+        $sql = "SELECT * FROM educations WHERE edid = '$id' AND del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
     }
     public function addEducation($institute, $session, $desc, $order)
     {
@@ -593,6 +602,15 @@ class auth extends database
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function fetchExperience($id)
+    {
+        $sql = "SELECT * FROM experiences WHERE exid = '$id' AND del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
     public function addExperience($org, $duration, $desc, $order)
     {
         $sql = "INSERT INTO experiences (organization, duration, description, exp_order, created_on) VALUES (:inst, :session, :desc, :order, :date)";
@@ -663,6 +681,15 @@ class auth extends database
             ->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+    public function fetchService($id)
+    {
+        $sql = "SELECT * FROM services WHERE edid = '$id' AND del != '1'";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
     }
     public function addService($name, $desc, $order)
     {

@@ -263,6 +263,61 @@ if(isset($_SESSION['isLoggedIn'])){
             echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
         }
     }
+    
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "getEducation"){
+        
+        $id = $_POST['id'];
+        
+        $result = $api->fetchEducation($id);
+
+        if ($result){
+            echo json_encode($result);
+        }else{
+            echo '{"msg" : "Data Could not be fetched", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "addEducation") {
+
+        $institute = $api->filter_data($_POST['institute']);
+        $session = $api->filter_data($_POST['session']);
+        $order = $api->filter_data($_POST['order']);
+        $desc = $api->filter_data($_POST['desc']);
+
+        $result = $api->addEducation($institute, $session, $desc, $order);
+        if ($result) {
+            echo '{"msg" : "Data Added Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateEducation") {
+
+        $institute = $api->filter_data($_POST['institute']);
+        $session = $api->filter_data($_POST['session']);
+        $order = $api->filter_data($_POST['order']);
+        $desc = $api->filter_data($_POST['desc']);
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->UpdateEducation($id, $institute, $session, $desc, $order);
+        if ($result) {
+            echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "deleteEducation") {
+
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->deleteEducation($id);
+        if ($result) {
+            echo '{"msg" : "Data Deleted Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
 
 }
 

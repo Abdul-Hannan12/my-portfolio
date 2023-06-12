@@ -74,11 +74,15 @@ $page =  basename($_SERVER['PHP_SELF']);
                     <i class="fas fa-user me-2"></i> Profile
                 </a>
                 <div
-                    class="dropdown-menu bg-transparent border-0 <?php if($page == "profile.php" OR $page == "about.php" OR $page == "education.php"){ echo "show";}?>">
+                    class="dropdown-menu bg-transparent border-0 <?php if($page == "profile.php" OR $page == "about.php" OR $page == "education.php" OR $page == "services.php" OR $page == "experience.php"){ echo "show";}?>">
                     <a href="<?php echo $uri ?>profile/profile.php"
                         class="dropdown-item <?php if($page == "profile.php"){echo "text-primary";}?>"> Profile </a>
                     <a href="<?php echo $uri ?>profile/about.php"
                         class="dropdown-item <?php if($page == "about.php"){echo "text-primary";}?>"> About Me </a>
+                    <a href="<?php echo $uri ?>profile/services.php"
+                        class="dropdown-item <?php if($page == "services.php"){echo "text-primary";}?>"> Services </a>
+                    <a href="<?php echo $uri ?>profile/experience.php"
+                        class="dropdown-item <?php if($page == "experience.php"){echo "text-primary";}?>"> Experience </a>
                     <a href="<?php echo $uri ?>profile/education.php"
                         class="dropdown-item <?php if($page == "education.php"){echo "text-primary";}?>"> Education </a>
                 </div>

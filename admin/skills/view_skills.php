@@ -115,7 +115,6 @@ $no=1;
             data:  `MODE=getSkill&id=${$id}`,
             success: function(data) {
                 var skillData = JSON.parse(data) 
-                console.log(skillData);
                 if(skillData['Status'] != "Error" && skillData['sid'] == $id){
 
                     $('#id').val(skillData['sid']);
