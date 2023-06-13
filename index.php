@@ -47,6 +47,24 @@ $aboutParas = $auth->fetchAboutParas();
 // EDUCATION DATA
 $educations = $auth->fetchEducations();
 
+// SERVICES DATA
+$services = $auth->fetchServices();
+
+function getServiceIcon($service){
+	switch(trim(strtolower($service))){
+		case 'web development':
+			return 'icon fab fa-chrome';
+		case 'app development':
+			return 'fas fa-mobile';
+		case 'graphic designing':
+			return 'icon fas fa-photo-video';
+		case 'game development':
+			return 'icon fas fa-gamepad';
+		default:
+			return '';
+	}
+}
+
 ?>
 
 <?php include './includes/header.php' ?>
@@ -217,54 +235,20 @@ $educations = $auth->fetchEducations();
 					<!-- services items -->
 					<div class="service-items">
 
-						<div class="service-col">
-							<div class="service-item">
-								<div class="icon"><i class="fas fa-mobile"></i></div>
-								<div class="name">App <br />Development</div>
-								<div class="single-post-text">
-									<p>
-										App development involves the complete lifecycle of designing, coding, testing, and launching mobile applications for various platforms, delivering seamless and innovative user experiences.
-									</p>
+						<?php foreach($services as $service){ ?>
+
+							<div class="service-col">
+								<div class="service-item">
+									<div class="icon"><i class="<?php echo getServiceIcon($service['name']) ?>"></i></div>
+									<div class="name"><?php echo $service['name'] ?></div>
+									<div class="single-post-text">
+										<p><?php echo $service['description'] ?></p>
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="service-col">
-							<div class="service-item">
-								<div class="icon"><i class="icon fab fa-chrome"></i></div>
-								<div class="name">Web <br />Development</div>
-								<div class="single-post-text">
-									<p>
-										Web development encompasses the entire process of creating and building websites, including designing, coding, and implementing interactive and visually appealing web pages.
-									</p>
-								</div>
-							</div>
-						</div>
-
-						<div class="service-col">
-							<div class="service-item">
-								<div class="icon"><i class="icon fas fa-photo-video"></i></div>
-								<div class="name">Graphic <br />Designing</div>
-								<div class="single-post-text">
-									<p>
-										Graphic design is the art of visual storytelling, blending creativity and communication to convey powerful messages through stunning visuals.
-									</p>
-								</div>
-							</div>
-						</div>
-
-						<div class="service-col">
-							<div class="service-item">
-								<div class="icon"><i class="icon fas fa-gamepad"></i></div>
-								<div class="name">Game <br />Development</div>
-								<div class="single-post-text">
-									<p>
-										Game development is the fusion of imagination and technology, crafting interactive worlds and captivating experiences for players to immerse themselves in.
-									</p>
-								</div>
-							</div>
-						</div>
-
+						<?php } ?>
+						
 					</div>
 
 					<div class="clear"></div>
