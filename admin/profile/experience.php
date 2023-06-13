@@ -3,7 +3,7 @@ include '../includes/header.php';
 if(isset($_SESSION['isLoggedIn'])){
     include '../api/auth.php';
     $auth = new auth();
-    $educations = $auth->fetchEducations();
+    $experiences = $auth->fetchExperiences();
     $no=1;
 }
 
@@ -13,21 +13,21 @@ if(isset($_SESSION['isLoggedIn'])){
 <div class="container-fluid mt-4">
     <div class="row px-sm-5 px-4">
         <div class="bg-white rounded px-sm-5 px-3 py-4">
-            <h4 class="title mb-4"> Education </h4>
-            <form id="addEducation">
+            <h4 class="title mb-4"> Experiences </h4>
+            <form id="addExperience">
                 <div class="row">
                     <div class="col-md-4 col-sm-6 mb-4">
-                        <label for="institute" class="form-label">
-                            Institute
+                        <label for="organization" class="form-label">
+                            Organization
                         </label>
-                        <input type="text" name="institute" id="institute" class="form-control">
+                        <input type="text" name="organization" id="organization" class="form-control">
                     </div>
 
                     <div class="col-md-4 col-sm-6 mb-4">
-                        <label for="session" class="form-label">
-                            Session
+                        <label for="duration" class="form-label">
+                            Duration
                         </label>
-                        <input type="text" id="session" name="session" class="form-control">
+                        <input type="text" id="duration" name="duration" class="form-control">
                     </div>
 
                     <div class="col-md-2 col-sm-6 mb-4">
@@ -60,19 +60,19 @@ if(isset($_SESSION['isLoggedIn'])){
                             <tr>
                                 <th>#</th>
                                 <th class="d-none">#</th>
-                                <th>Institute</th>
-                                <th>Session</th>
+                                <th>Organization</th>
+                                <th>Duration</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
     
                         <tbody>
-                                <?php foreach($educations as $education){ ?>
+                                <?php foreach($experiences as $exp){ ?>
                                     <tr >
                                         <th style="vertical-align: middle;" scope="row"> <?php echo $no++ ?> </th>
-                                        <td class="d-none"><?php echo $education['edid'] ?></td>
-                                        <td style="vertical-align: middle;"><?php echo $education['institute'] ?></td>
-                                        <td style="vertical-align: middle;"><?php echo $education['session'] ?></td>
+                                        <td class="d-none"><?php echo $exp['exid'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $exp['organization'] ?></td>
+                                        <td style="vertical-align: middle;"><?php echo $exp['duration'] ?></td>
                                         <td style="vertical-align: middle;">
                                             <button class="btn btn-sm btn-info text-white btn_edit"><i class="fas fa-pencil-alt"></i></button>
                                             &nbsp;&nbsp;&nbsp;
@@ -93,21 +93,21 @@ if(isset($_SESSION['isLoggedIn'])){
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Skill</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Experience</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
         
-        <form id="updateEducation">
+        <form id="updateExperience">
             <div class="row">
                 <div class="col-sm-11 mb-4">
                     <input type="hidden" name="id" id="id">
-                    <label for="inst" class="form-label">Institute</label>
-                    <input type="text" class="form-control" id="inst" name="institute">
+                    <label for="org" class="form-label">Organization</label>
+                    <input type="text" class="form-control" id="org" name="organization">
                 </div>
                 <div class="col-sm-11 mb-4">
-                    <label for="sess" class="form-label">Session</label>
-                    <input type="text" class="form-control" id="sess" name="session">
+                    <label for="dur" class="form-label">Duration</label>
+                    <input type="text" class="form-control" id="dur" name="duration">
                 </div>
                 <div class="col-sm-11 mb-4">
                     <label for="ord" class="form-label">Order</label>
@@ -133,14 +133,14 @@ if(isset($_SESSION['isLoggedIn'])){
 
 <script>
 
-     $("#addEducation").submit(function(e) {
+     $("#addExperience").submit(function(e) {
         e.preventDefault();
-        if($("#institute").val() == ""){
-            alert("Please Enter Institute");
+        if($("#organization").val() == ""){
+            alert("Please Enter Organization");
             return;
         }
-        else if($("#session").val() == ""){
-            alert("Please Enter Session");
+        else if($("#duration").val() == ""){
+            alert("Please Enter Duration");
             return;
         }
         else if($("#order").val() == ""){
@@ -155,12 +155,12 @@ if(isset($_SESSION['isLoggedIn'])){
             $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  "MODE=addEducation&" + $("#addEducation").serialize(),
+            data:  "MODE=addExperience&" + $("#addExperience").serialize(),
             success: function(data) {
                 let { Status } = JSON.parse(data);
                 if(Status == "Success"){
                     swal({
-                        text: "Education Added!",
+                        text: "Experience Added!",
                         icon: 'success'
                     }).then(function() {
                         window.location.reload()
@@ -186,16 +186,16 @@ if(isset($_SESSION['isLoggedIn'])){
         $.ajax({
             type: "POST",
             url: "../api/process.php",
-            data:  `MODE=getEducation&id=${$id}`,
+            data:  `MODE=getExperience&id=${$id}`,
             success: function(data) {
-                var eduData = JSON.parse(data);
-                if(eduData['Status'] != "Error" && eduData['edid'] == $id){
+                var expData = JSON.parse(data);
+                if(expData['Status'] != "Error" && expData['exid'] == $id){
 
-                    $('#id').val(eduData['edid']);
-                    $('#inst').val(eduData['institute']);
-                    $('#sess').val(eduData['session']);
-                    $('#ord').val(eduData['education_order']);
-                    $('#desp').val(eduData['description']);
+                    $('#id').val(expData['exid']);
+                    $('#org').val(expData['organization']);
+                    $('#dur').val(expData['duration']);
+                    $('#ord').val(expData['exp_order']);
+                    $('#desp').val(expData['description']);
 
                 }
             }
@@ -205,7 +205,7 @@ if(isset($_SESSION['isLoggedIn'])){
 $('.table-responsive').on('click','.btn_delete',function () {
         swal({
             title: "Are you sure?",
-            text: "Do you really want to delete this education",
+            text: "Do you really want to delete this experience",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -217,11 +217,11 @@ $('.table-responsive').on('click','.btn_delete',function () {
                     $.ajax({
                         type: "POST",
                         url: "../api/process.php",
-                        data:  "MODE=deleteEducation&id="+id,
+                        data:  "MODE=deleteExperience&id="+id,
                         success: function(data) {
                             var { Status } = JSON.parse(data) 
                             if (Status == 'Success'){
-                                swal("Skill has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
+                                swal("Experience has been deleted!", {icon: "success"}).then(()=>{window.location.reload()});
                             }else{
                                 swal(
                                     'Opss',
@@ -232,23 +232,23 @@ $('.table-responsive').on('click','.btn_delete',function () {
                         }
                     });
                 } else {
-                    swal("Skill not deleted!");
+                    swal("Experience not deleted!");
                 }
             });
 });
 
-$("#updateEducation").submit(function(event) {
+$("#updateExperience").submit(function(event) {
         event.preventDefault();
         $.ajax({
                 type: "POST",
                 url: "../api/process.php",
-                data:  "MODE=updateEducation&" + $("#updateEducation").serialize(),
+                data:  "MODE=updateExperience&" + $("#updateExperience").serialize(),
                 success: function(data) {
                     var {Status} = JSON.parse(data)
                             if(Status == "Success"){
                                 swal(
                                     'Welldone',
-                                    'Education Updated Successfully!',
+                                    'Experience Updated Successfully!',
                                     'success'
                                 ).then(function() {
                                     window.location.reload();
@@ -256,7 +256,7 @@ $("#updateEducation").submit(function(event) {
                             }else{
                                 swal(
                                     'Opss',
-                                    'Education Not Updated',
+                                    'Experience Not Updated',
                                     'error'
                                 )
                             }

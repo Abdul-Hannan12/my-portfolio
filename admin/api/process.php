@@ -372,6 +372,61 @@ if(isset($_SESSION['isLoggedIn'])){
         }
     }
 
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "getExperience"){
+        
+        $id = $_POST['id'];
+        
+        $result = $api->fetchExperience($id);
+
+        if ($result){
+            echo json_encode($result);
+        }else{
+            echo '{"msg" : "Data Could not be fetched", "Status" : "Error"}';
+        }
+
+    }
+
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "addExperience") {
+
+        $org = $api->filter_data($_POST['organization']);
+        $duration = $api->filter_data($_POST['duration']);
+        $order = $api->filter_data($_POST['order']);
+        $desc = $api->filter_data($_POST['desc']);
+
+        $result = $api->addExperience($org, $duration, $desc, $order);
+        if ($result) {
+            echo '{"msg" : "Data Added Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "updateExperience") {
+
+        $org = $api->filter_data($_POST['organization']);
+        $duration = $api->filter_data($_POST['duration']);
+        $order = $api->filter_data($_POST['order']);
+        $desc = $api->filter_data($_POST['desc']);
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->updateExperience($id, $org, $duration, $desc, $order);
+        if ($result) {
+            echo '{"msg" : "Data updated Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+    if (isset($_POST['MODE']) && $_POST['MODE'] == "deleteExperience") {
+
+        $id = $api->filter_data($_POST['id']);
+
+        $result = $api->deleteExperience($id);
+        if ($result) {
+            echo '{"msg" : "Data Deleted Successfully!", "Status" : "Success"}';
+        } else {
+            echo '{"msg" : "Something Went Wrong Please Try Again!", "Status" : "Error"}';
+        }
+    }
+
 }
 
 ?>

@@ -4,16 +4,14 @@ include './api/auth.php';
 $auth = new auth();
 
 // visitor info
-$agent=$_SERVER['HTTP_USER_AGENT'];
-$ip= $auth->getUserIP();
-$host_name = gethostbyaddr($ip);
-$platform = $_SERVER['HTTP_SEC_CH_UA_PLATFORM'];
-$browser_info = $_SERVER['HTTP_SEC_CH_UA'];
-$is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
+// $agent=$_SERVER['HTTP_USER_AGENT'];
+// $ip= $auth->getUserIP();
+// $host_name = gethostbyaddr($ip);
+// $platform = $_SERVER['HTTP_SEC_CH_UA_PLATFORM'];
+// $browser_info = $_SERVER['HTTP_SEC_CH_UA'];
+// $is_mobile = $_SERVER['HTTP_SEC_CH_UA_MOBILE'];
 
 $user = $auth->fetchUser(1);
-$codeSkills = $auth->fetchSkillsByType('coding');
-$otherSkills = $auth->fetchSkillsByType('other');
 
 // user info
 $name = $user['name'];
@@ -28,6 +26,10 @@ $bio = $user['bio'];
 // user name with line break
 $nameArr = explode(" ", $name); 
 $nameLogo = $nameArr[0].'<br>'.$nameArr[1];
+
+// SKILLS DATA
+$codeSkills = $auth->fetchSkillsByType('coding');
+$otherSkills = $auth->fetchSkillsByType('other');
 
 // PROJECTS DATA
 $projects = $auth->getProjects();
@@ -62,6 +64,19 @@ function getServiceIcon($service){
 			return 'icon fas fa-gamepad';
 		default:
 			return '';
+	}
+}
+
+// EXPERIENCE DATA
+$experiences = $auth->fetchExperiences();
+
+function getFormattedOrgName($org){
+	if(str_word_count($org) < 3){
+		$arr = explode(" ", $org);
+		$str = implode("<br>", $arr);
+		return $str;
+	}else{
+		return $org;
 	}
 }
 
@@ -248,13 +263,12 @@ function getServiceIcon($service){
 							</div>
 
 						<?php } ?>
-						
+
 					</div>
 
 					<div class="clear"></div>
 				</div>
 			</div>
-			
 
 			<!-- Section Resume -->
 			<div class="section resume" id="section-experience">
@@ -270,29 +284,19 @@ function getServiceIcon($service){
 					<div class="content-carousel">
 						<div class="owl-carousel" data-slidesview="2" data-slidesview_mobile="1">
 
-							<div class="item">
-								<div class="resume-item active">
-									<div class="date">Present</div>
-									<div class="name">Bingtech <br />Solutions</div>
-									<div class="single-post-text">
-										<p>
-											As an app developer at BingTech Solutions, I am passionately creating innovative mobile experiences that captivate users and push the boundaries of technology.
-										</p>
-									</div>
-								</div>
-							</div>
+							<?php foreach($experiences as $exp){ ?>
 
-							<div class="item">
-								<div class="resume-item">
-									<div class="date">2022-2022</div>
-									<div class="name">Bingtech <br />Solutions</div>
-									<div class="single-post-text">
-										<p>
-											During my 3-month internship (July-October), BingTech Solutions fueled my passion for innovative app development, shaping captivating mobile experiences.
-										</p>
+								<div class="item">
+									<div class="resume-item active">
+										<div class="date"><?php echo $exp['duration'] ?></div>
+										<div class="name"><?php echo getFormattedOrgName($exp['organization']) ?></div>
+										<div class="single-post-text">
+											<p><?php echo $exp['description'] ?></p>
+										</div>
 									</div>
 								</div>
-							</div>
+
+							<?php } ?>
 
 						</div>
 

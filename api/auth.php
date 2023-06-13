@@ -108,6 +108,15 @@ class auth extends database
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function fetchExperiences()
+    {
+        $sql = "SELECT * FROM experiences WHERE del != '1' ORDER BY exp_order ASC";
+        $stmt = $this
+            ->conn
+            ->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 
 }
 

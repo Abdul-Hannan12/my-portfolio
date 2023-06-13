@@ -57,6 +57,14 @@ class auth extends database
         $stmt->execute();
         return $stmt->fetch();
     }
+    public function getIdName($table)
+    {
+        if ($table == 'experiences' || $table == 'educations'){
+            return $table[0].$table[1].'id';
+        }else{
+            return $table[0].'id';
+        }
+    }
 
     /* ====================  PROJECT DATA START  ==================== */
     public function addProject($project_name, $project_type, $project_desc, $project_url, $project_img)
@@ -366,7 +374,7 @@ class auth extends database
     }
     public function getItem($table, $id)
     {
-        $idName = $table[0].'id';
+        $idName = $this->getIdName($table);
         $sql = "SELECT * FROM $table WHERE $idName = '$id'";
         $stmt = $this
             ->conn
@@ -378,7 +386,7 @@ class auth extends database
     {
         $item = $this->getTrashById($id);
         $table = $item['table_name'];
-        $idName = $table[0].'id';
+        $idName = $this->getIdName($table);
         $item_id = $item['item_id'];
         $sql = "UPDATE $table SET del = '0' WHERE $idName = '$item_id'";
         $stmt = $this
@@ -403,7 +411,7 @@ class auth extends database
     {
         $item = $this->getTrashById($id);
         $table = $item['table_name'];
-        $idName = $table[0].'id';
+        $idName = $this->getIdName($table);
         $item_id = $item['item_id'];
         $sql = "DELETE FROM $table WHERE $idName = '$item_id'";
         $stmt = $this
